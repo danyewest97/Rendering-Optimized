@@ -16,6 +16,9 @@ public class Main {
 	
 	public static Object3D cube;
 	
+	
+	public static double millis = 0;
+	
 	public static void main(String[] args) {
 		frame = new Frame();
 		Panel panel = new Panel();
@@ -138,18 +141,20 @@ public class Main {
 				// cube.lines.addAll(tri12);
 				
 				for (int i = 0; i < cube.points.size(); i++) {
-					cube.points.get(i).z += 1;
+					cube.points.get(i).x += Math.cos(millis / 100);
+					cube.points.get(i).y += Math.sin(millis / 100);
+					// cube.points.get(i).z += 1;
 				}
 				
-				cube.clear();
-				cube.update();
+				
+				if (cube.clear()) if (cube.update()) panel.repaint();
 
 
-				panel.repaint();
 				
 				
+				millis++;
 			}
-		}, 0, 10);
+		}, 0, 1);
 		
 		
 	}
@@ -560,8 +565,9 @@ class Object3D {
 		}
 	}
 	
-	public void clear() {
-		this.lines = new ArrayList<Line>();
+	public boolean clear() {
+		this.lines.clear();
+		return true;
 	}
 }
 
