@@ -1,0 +1,7 @@
+main/Main.java
+main/Renderer.java
+main/Point.java
+main/Window.java
+main/Settings.java
+main/Face.java
+test/Main.java
