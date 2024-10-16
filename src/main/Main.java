@@ -146,9 +146,17 @@ public class Main {
 					// cube.points.get(i).z += 1;
 				}
 				
+				if (!panel.running) {
+					if (cube.clear()) {
+						if (cube.update()) {
+							panel.repaint();
+						}
+					}
+				}
 				
-				if (cube.clear()) if (cube.update()) panel.repaint();
-
+				// cube.clear();
+				// cube.update();
+				// panel.repaint();
 
 				
 				
@@ -419,15 +427,6 @@ class Frame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(new Dimension(500, 500));
 		this.setLocationRelativeTo(null);
-		// Timer fps1 = new Timer();
-		// fps1.schedule(new TimerTask() {
-			// @Override
-			// public void run() {
-				// repaint();
-				
-				
-			// }
-		// }, 0, 16);
 	}
 }
 
@@ -435,6 +434,7 @@ class Frame extends JFrame {
 
 class Panel extends JPanel {
 	public ArrayList<Object3D> objects;
+	public boolean running = false;
 	
 	public Panel() {
 		objects = new ArrayList<Object3D>();
@@ -448,12 +448,13 @@ class Panel extends JPanel {
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		running = true;
 		Graphics2D g2D = (Graphics2D) g;
 		
 		ArrayList<Point> allPoints = new ArrayList<Point>();
 		
+		
 		for (int i = 0; i < objects.size(); i++) {
-			
 			for (int j = 0; j < objects.get(i).lines.size(); j++) {
 				for (int k = 0; k < objects.get(i).lines.get(j).points.size(); k++) {
 					allPoints.add(objects.get(i).lines.get(j).points.get(k));
@@ -476,6 +477,7 @@ class Panel extends JPanel {
 		// g2D.setColor(Color.black);
 		// g2D.drawOval((int) (Main.camX - 2.5), (int) (Main.camY - 2.5), 5, 5);
 		
+		running = false;
 	}
 	
 	
