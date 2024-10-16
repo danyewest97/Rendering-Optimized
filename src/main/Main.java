@@ -4,278 +4,283 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.*;
 import java.util.*;
-import main.Point;
-import main.Face;
+import java.util.concurrent.*;
+
+import java.time.Duration;
+import java.time.Instant;
 
 public class Main {
+	public static Frame frame;
+	public static Camera mainCam = new Camera(250, 250, 0);
+	public static double zSensitivity = 0.003;
 	
-	public static JFrame window;
-	// public static double angle = 0;
-	public static double camX = 250;
-	public static double camY = 250;
-	public static double camZ = 0;
-	
-	public static ArrayList<BasicObject> objects = new ArrayList<BasicObject>();
-	public static ArrayList<Face> faces = new ArrayList<Face>();
-	public static ArrayList<Point> points = new ArrayList<Point>();
-	
-	public static double scale = 1;
-	public static double size = 1;
-	
-	public static double zSensitivity = 0.001;
-	public static double scaleSensitivity = 1;
-	
-	public static double millis = 0;
-	
-	public static double[][] temp = {
-			{100, 250, 100},
-			{200, 200, 10},
-			{200, 100, 100},
-			{100, 100, 10},
-			{150, 150, 100},
-			{100, 200, 10},
-			{150, 150, 100},
-			{200, 200, 10},
-			{150, 150, 100},
-			{200, 100, 10},
-			{150, 150, 100},
-			{100, 100, 10},
-		};
-	
-	public static Face f1 = new Face(new Point(temp[0][0], temp[0][1], temp[0][2], Color.black), new Point(temp[1][0], temp[1][1], temp[1][2], Color.black), new Point(temp[2][0], temp[2][1], temp[2][2], Color.black));
-	public static Face f2 = new Face(new Point(temp[2][0], temp[2][1], temp[2][2], Color.red), new Point(temp[3][0], temp[3][1], temp[3][2], Color.red), new Point(temp[4][0], temp[4][1], temp[4][2], Color.red));
+	public static Object3D cube;
 	
 	public static void main(String[] args) {
-		
+		frame = new Frame();
+		Panel panel = new Panel();
+		frame.add(panel);
 		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); //not necessary, just prevents a bug with Comparator that sends an error message, however this error message is not fatal
+
+		
+		Point a = new Point(100, 100, 0, Color.red);
+		Point b = new Point(200, 100, 0, Color.blue);
+		Point c = new Point(200, 200, 0, Color.green);
+		Point d = new Point(100, 200, 0, Color.yellow);
+		
+		Point a1 = new Point(100, 100, 100, Color.red);
+		Point b1 = new Point(200, 100, 100, Color.blue);
+		Point c1 = new Point(200, 200, 100, Color.green);
+		Point d1 = new Point(100, 200, 100, Color.yellow);
 		
 		
+		ArrayList<Point> cpoints = new ArrayList<Point>();
+		cpoints.add(a);
+		cpoints.add(b);
+		cpoints.add(c);
+		cpoints.add(d);
+		cpoints.add(a1);
+		cpoints.add(b1);
+		cpoints.add(c1);
+		cpoints.add(d1);
 		
-		initializeWindow();
 		
-		
-		
-		
-		
-		
-		// ArrayList<Point> tempPoints = new ArrayList<Point>();
-		
-		// for (int i = 0; i < temp.length; i++) {
-			// for (double[] point : generateLineArray(temp[i][0], temp[i][1], temp[i][2], temp[(i + 1) % temp.length][0], temp[(i + 1) % temp.length][1], temp[(i + 1) % temp.length][2])) {
-				// tempPoints.add(new Point(point[0], point[1], point[2], camX, camY, camZ, Color.black));
-			// }
-		// }
-		
-		// objects.add(new BasicObject(tempPoints));
-		objects.add(new BasicObject(f1.points()));
-		objects.add(new BasicObject(f2.points()));
-		
-		JPanel p = new JPanel() {
+		Object3D cube = new Object3D(new ArrayList<Line>(), cpoints, 12) {
 			@Override
-			public void paintComponent(Graphics g) {
-				Graphics2D g2D = (Graphics2D) g;
-					// Face f1 = new Face(new Point(temp[0][0], temp[0][1], temp[0][2], Color.black), new Point(temp[1][0], temp[1][1], temp[1][2], Color.black), new Point(temp[2][0], temp[2][1], temp[2][2], Color.black));
-					// Face f2 = new Face(new Point(temp[2][0], temp[2][1], temp[2][2], Color.red), new Point(temp[3][0], temp[3][1], temp[3][2], Color.red), new Point(temp[4][0], temp[4][1], temp[4][2], Color.red));
-					objects.remove(0);
-					objects.remove(0);
-					objects.add(new BasicObject(f1.points()));
-					objects.add(new BasicObject(f2.points()));
-					
-					for (int i = 0; i < points.size(); i++) {
-						points.remove(0);
-					}
-					for (BasicObject object : objects) {
-						for (Point p : object.points) {
-							points.add(p);
-						}
-					}
-					
-					points = organize(points);
-					for (int i = points.size() - 1; i >= 0; i--) {
-						g2D.setColor(points.get(i).color);
-						
-						int[] point = points.get(i).xyInt();
-						
-						// double scale = Math.exp(-point[2] * scaleSensitivity) + 0.5;
-						double scale = 1;
-						
-						// if (point[2] - ((scale * size) / 2) >= camZ) {
-							g2D.drawOval((int) (point[0] - (scale * size) / 2), (int) (point[1] - (scale * size) / 2), (int) (scale * size), (int) (scale * size));
-							g2D.fillOval((int) (point[0] - (scale * size) / 2), (int) (point[1] - (scale * size) / 2), (int) (scale * size), (int) (scale * size));
-						// }
-						
-					}
-					
-					
-					
-					
-					
-					// g2D.drawOval((int) (camX - 2.5), (int) (camY - 2.5), 5, 5);
+			public void updateFunc(int index) {
+				ArrayList<Line> tri1 = new ArrayList<Line>();
+				ArrayList<Line> tri2 = new ArrayList<Line>();
+				ArrayList<Line> tri3 = new ArrayList<Line>();
+				ArrayList<Line> tri4 = new ArrayList<Line>();
+				ArrayList<Line> tri5 = new ArrayList<Line>();
+				ArrayList<Line> tri6 = new ArrayList<Line>();
+				ArrayList<Line> tri7 = new ArrayList<Line>();
+				ArrayList<Line> tri8 = new ArrayList<Line>();
+				ArrayList<Line> tri9 = new ArrayList<Line>();
+				ArrayList<Line> tri10 = new ArrayList<Line>();
+				ArrayList<Line> tri11 = new ArrayList<Line>();
+				ArrayList<Line> tri12 = new ArrayList<Line>();
+				
+				if (index == 0) tri1 = tri(a, b, c);
+				if (index == 1) tri2 = tri(a, c, d);
+				if (index == 2) tri3 = tri(a1, b1, c1);
+				if (index == 3) tri4 = tri(a1, c1, d1);
+				if (index == 4) tri5 = tri(a1, a, b1);
+				if (index == 5) tri6 = tri(b1, b, a);
+				if (index == 6) tri7 = tri(b1, b, c);
+				if (index == 7) tri8 = tri(b1, c1, c);
+				if (index == 8) tri9 = tri(d, c, c1);
+				if (index == 9) tri10 = tri(d, d1, c1);
+				if (index == 10) tri11 = tri(a1, a, d1);
+				if (index == 11) tri12 = tri(d1, d, a);
+				
+				
+				
+				
+				if (index == 0)  this.lines.addAll(tri1);
+				if (index == 1)  this.lines.addAll(tri2);
+				if (index == 2)  this.lines.addAll(tri3);
+				if (index == 3)  this.lines.addAll(tri4);
+				if (index == 4)  this.lines.addAll(tri5);
+				if (index == 5)  this.lines.addAll(tri6);
+				if (index == 6)  this.lines.addAll(tri7);
+				if (index == 7)  this.lines.addAll(tri8);
+				if (index == 8)  this.lines.addAll(tri9);
+				if (index == 9)  this.lines.addAll(tri10);
+				if (index == 10) this.lines.addAll(tri11);
+				if (index == 11) this.lines.addAll(tri12);
+				
+				
 			}
 		};
 		
-		window.add(p);
 		
-		// System.out.println(objects.get(0).points.size());
+		
+		
+		
+		
+		
+		panel.objects.add(cube);
+		
+		
 		
 		Timer t = new Timer();
-		
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				millis++;
-				// try {
-					// for (Point p : objects.get(1).points) {
-						
-						if (millis > 1000 && millis < 3000) {
-							f2.a.x += 0.01;
-							f2.a.y += 0.01;
-						}
-						
-						if (millis > 3000) {
-							// p.z += Math.random() * (millis / 800) - (millis / 1600);
-							f2.a.z += Math.sin(millis/300) / 2;
-						}
-					// }
-				// } catch (Exception e) {
-					
-				// }
+			
+				// ArrayList<Line> tri1 = tri(a, b, c);
+				// ArrayList<Line> tri2 = tri(a, c, d);
+				// ArrayList<Line> tri3 = tri(a1, b1, c1);
+				// ArrayList<Line> tri4 = tri(a1, c1, d1);
+				// ArrayList<Line> tri5 = tri(a1, a, b1);
+				// ArrayList<Line> tri6 = tri(b1, b, a);
+				// ArrayList<Line> tri7 = tri(b1, b, c);
+				// ArrayList<Line> tri8 = tri(b1, c1, c);
+				// ArrayList<Line> tri9 = tri(d, c, c1);
+				// ArrayList<Line> tri10 = tri(d, d1, c1);
+				// ArrayList<Line> tri11 = tri(a1, a, d1);
+				// ArrayList<Line> tri12 = tri(d1, d, a);
+				
+				// cube.lines = new ArrayList<Line>();
+				
+				// cube.lines.addAll(tri1);
+				// cube.lines.addAll(tri2);
+				// cube.lines.addAll(tri3);
+				// cube.lines.addAll(tri4);
+				// cube.lines.addAll(tri5);
+				// cube.lines.addAll(tri6);
+				// cube.lines.addAll(tri7);
+				// cube.lines.addAll(tri8);
+				// cube.lines.addAll(tri9);
+				// cube.lines.addAll(tri10);
+				// cube.lines.addAll(tri11);
+				// cube.lines.addAll(tri12);
+				
+				for (int i = 0; i < cube.points.size(); i++) {
+					cube.points.get(i).z += 1;
+				}
+				
+				cube.clear();
+				cube.update();
+
+
+				panel.repaint();
+				
 				
 			}
-		}, 0, 1);
+		}, 0, 10);
+		
 		
 	}
 	
-	public static void initializeWindow() {
-		window = new JFrame() {
-			@Override
-			public void paint(Graphics g) {
-				super.paintComponents(g);
-			}
-		};
-		window.setTitle("Window");
-		window.setVisible(true);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(new Dimension(500, 500));
-		window.setLocationRelativeTo(null);
-		
-		Timer fps = new Timer();
-		
-		fps.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				// calculate();
-				window.repaint();
-			}
-		}, 0, 16);
-	}
 	
-	public static void initializePanel(JPanel panel) {
-		panel.setVisible(true);
-		panel.setOpaque(false);
-		panel.setBounds(new Rectangle(1920, 1080));
+	
+	public static ArrayList<Line> tri(Point a, Point b, Point c) {
+		ArrayList<Line> result = new ArrayList<Line>();
+
+
+		Point center = new Point((a.x + b.x + c.x) / 3, (a.y + b.y + c.y) / 3, (a.z + b.z + c.z) / 3, Color.red);
 		
-	}
-	
-	public static double dist(double x1, double y1, double z1, double x2, double y2, double z2) {
-		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
-	}
-	
-	public static double[][] generateLineArray(double x1, double y1, double z1, double x2, double y2, double z2) {
-		double numPoints = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
-		double[][] points = new double[(int) numPoints][3];
-		for (int i = 0; i < (int) numPoints; i++) {
-			points[i][0] = x1 + i * (x2 - x1) / numPoints;
-			points[i][1] = y1 + i * (y2 - y1) / numPoints;
-			points[i][2] = z1 + i * (z2 - z1) / numPoints;
+		Line line1 = lineArray(a, b);
+		Line line2 = lineArray(b, c);
+		Line line3 = lineArray(c, a);
+		
+		
+		
+		double area = a.dist(b);
+		
+		
+		Point areaPoint = new Point(a.x, a.y, a.z, c.color);
+		for (Point p : line1.points) {
+			if (c.dist(p) < c.dist(areaPoint)) areaPoint = p;
 		}
 		
-		return points;
-	}
-	
-	public static int[][] generateLineArrayInt(double x1, double y1, double z1, double x2, double y2, double z2) {
-		double numPoints = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-		int[][] points = new int[(int) numPoints][3];
-		for (int i = 0; i < (int) numPoints; i++) {
-			points[i][0] = (int) (x1 + i * (x2 - x1) / numPoints);
-			points[i][1] = (int) (y1 + i * (y2 - y1) / numPoints);
-			points[i][2] = (int) (z1 + i * (z2 - z1) / numPoints);
+		area *= c.dist(areaPoint);
+		area /= 2;
+		
+		
+		ArrayList<Point> r = new ArrayList<Point>();
+		r.add(a);
+		
+		int numLines = (int) (a.dist(center) + 1);
+		
+		if (b.dist(center) > numLines) {
+			numLines = (int) (b.dist(center) + 1);
+			r.add(0, b);
+		} else {
+			r.add(b);
+		}
+		if (c.dist(center) > numLines) {
+			numLines = (int) (c.dist(center) + 1);
+			r.add(0, c);
+		} else {
+			if (c.dist(center) < r.get(1).dist(center)) {
+				r.add(c);
+			} else {
+				r.add(1, c);
+			}
 		}
 		
-		return points;
+		// ArrayList<Point> fill = lineArray2D(r.get(0), r.get(1));
+		Point f = r.get(0).xy(); //furthest point
+		Point c1 = r.get(1).xy(); //closer point 1
+		Point c2 = r.get(2).xy(); //closer point 2
+		
+		//Points above in 3D
+		Point fz = r.get(0);
+		Point c1z = r.get(1);
+		Point c2z = r.get(2);
+
+		
+		int temp = (int) (c1.dist(c2) + 0.5);
+		for (int i = 0; i <= temp; i++) {
+			double p = (double) i / temp;
+			Point x = new Point(f.x + (c1.x - f.x) * (p), f.y + (c1.y - f.y) * (p), 0, f.color).toXYZ(fz.z + (c1z.z - fz.z) * (p));
+			Point y = new Point(c2.x + (c1.x - c2.x) * (p), c2.y + (c1.y - c2.y) * (p), 0, c2.color).toXYZ(c2z.z + (c1z.z - c2z.z) * (p));
+			
+			result.add(lineArray(x, y));
+		}
+		
+				
+		//Adding black edges
+		Point e1 = new Point(a.x, a.y, a.z, Color.black);
+		Point e2 = new Point(b.x, b.y, b.z, Color.black);
+		Point e3 = new Point(c.x, c.y, c.z, Color.black);
+		
+		result.add(lineArray(e1, e2));
+		result.add(lineArray(e2, e3));
+		result.add(lineArray(e3, e1));
+		
+		return result;
 	}
 	
-	// public static double[][] generatePolygonArray2D(double[][] points) {
-		// double[][] result = null;
+	public static Line lineArray(Point a, Point b) {
+		Dimension size = frame.getContentPane().getSize();
+		int width = size.width;
+		int height = size.height;
 		
-		// for (int i = 0; i < points.length; i += 2) {
-			// int[] point = calculatePoint(points[i][0], points[i][1], points[i][2]);
-		// }
+		Line result = new Line();
 		
-		// return result;
-	// }
+		Point a2D = a.xy();
+		Point b2D = b.xy();
+		
+		int numPoints = (int) (a2D.dist(b2D) + 1); //trying to use a2D and b2D in order to not find more points than can be drawn, however I am unsure if it is working 100% properly
+		
+		numPoints *= 2; //for some reason, just using the distance as the line density no workie (it causes unfilled points in each line), so I multiplied it by 2 and it looks fine :D 
+		//(however this makes a lot of unnecessary points, since as far as I know numPoints should only need to equal the distance between a2D and b2D to fully fill the line)
+		
+
+		
+		for (int i = 0; i <= numPoints; i++) {
+			//The percent, as a decimal, to lerp from the first point to the last point
+			double p = (double) i / numPoints; //Either i or numPoints (or both) must be casted to a double so that i / numPoints will not be evaluated as 0
+			
+			double z = a.z + (b.z - a.z) * p;
+			Point add = new Point(a2D.x + (b2D.x - a2D.x) * p, a2D.y + (b2D.y - a2D.y) * p, 0, a.color).toXYZ(z);
+			Point addxy = add.xy();
+			
+			if (!(addxy.x < 0 || addxy.x > width)) {
+				if (!(addxy.y < 0 || addxy.y > height)) {
+					result.points.add(add);
+				}
+			}
+		}
+		
+		return result;
+	}
 	
-	// public static int[][] generateTriangleArray(int[] p1, int[] p2, int[] p3) {
-		// ArrayList<int[]> points = new ArrayList<int[]>();
-		
-		
-		
-		// int[] center = {(p1[0] + p2[0] + p3[0]) / 3, (p1[1] + p2[1] + p3[1]) / 3};
-		
-		// int numPoints = 0;
-		// if (Math.sqrt(Math.pow(p1[0] - center[0], 2) + Math.pow(p1[1] - center[1], 2)) > numPoints) {
-			// numPoints = (int) Math.sqrt(Math.pow(p1[0] - center[0], 2) + Math.pow(p1[1] - center[1], 2));
-		// }
-		
-		// if (Math.sqrt(Math.pow(p2[0] - center[0], 2) + Math.pow(p2[1] - center[1], 2)) > numPoints) {
-			// numPoints = (int) Math.sqrt(Math.pow(p1[0] - center[0], 2) + Math.pow(p1[1] - center[1], 2));
-		// }
-		
-		// if (Math.sqrt(Math.pow(p3[0] - center[0], 2) + Math.pow(p3[1] - center[1], 2)) > numPoints) {
-			// numPoints = (int) Math.sqrt(Math.pow(p1[0] - center[0], 2) + Math.pow(p1[1] - center[1], 2));
-		// }
-		
-		// for (int i = 0; i < numPoints; i++) {
-			// int[] p4 = {(p1[0] + i * (center[0] - p1[0]) / numPoints), (p1[1] + i * (center[1] - p1[1]) / numPoints), p1[2]};
-			// int[] p5 = {(p2[0] + i * (center[0] - p2[0]) / numPoints), (p2[1] + i * (center[1] - p2[1]) / numPoints), p2[2]};
-			// int[] p6 = {(p3[0] + i * (center[0] - p3[0]) / numPoints), (p3[1] + i * (center[1] - p3[1]) / numPoints), p3[2]};
-			
-			
-			// int[][] line1 = generateLineArrayInt(p4[0], p4[1], p4[2], p5[0], p5[1], p5[2]);
-			// int[][] line2 = generateLineArrayInt(p5[0], p5[1], p5[2], p6[0], p6[1], p6[2]);
-			// int[][] line3 = generateLineArrayInt(p6[0], p6[1], p6[2], p4[0], p4[1], p4[2]);
-			
-			// for (int j = 0; j < line1.length; j++) {
-				// points.add(line1[j]);
-			// }
-			
-			// for (int j = 0; j < line2.length; j++) {
-				// points.add(line2[j]);
-			// }
-			
-			// for (int j = 0; j < line3.length; j++) {
-				// points.add(line3[j]);
-			// }
-		// }
-		
-		
-		// int[][] result = new int[points.size()][3];
-		
-		// for (int i = 0; i < points.size(); i++) {
-			// result[i] = points.get(i);
-		// }
-		
-		
-		
-		// return result;
-	// }
-	
-	public static ArrayList<Point> organize(ArrayList<Point> points) {
+	public static ArrayList<Point> trueLineArray(Point a, Point b) {
 		ArrayList<Point> result = new ArrayList<Point>();
-		for (Point point : points) {
-			result.add(point);
+		
+		int numPoints = (int) (a.dist(b) + 1); //trying to use a2D and b2D in order to not find more points than can be drawn, however I am unsure if it is working 100% properly
+		
+		for (int i = 0; i <= numPoints; i++) {
+			//The percent, as a decimal, to lerp from the first point to the last point
+			double p = (double) i / numPoints; //Either i or numPoints (or both) must be casted to a double so that i / numPoints will not be evaluated as 0
+			
+			result.add(new Point(a.x + (b.x - a.x) * p, a.y + (b.y - a.y) * p, a.z + (b.z - a.z) * p, a.color));
 		}
-		Collections.sort(result, new ArrayComparator());
 		
 		return result;
 	}
@@ -283,33 +288,323 @@ public class Main {
 	
 }
 
-class ArrayComparator implements Comparator<Point> {
-	// Sorting in ascending order of z-value
-	public int compare(Point a, Point b) {
-		// Comparing z-values
-		if (a.z < b.z) return -1; // The first point has a smaller z-value
-		if (a.z > b.z) return 1;  // The first point has a larger z-value
-		return 0; // Both points have the same z-value
+
+
+
+class Point {
+	public double x;
+	public double y;
+	public double z;
+	public Color color;
+	
+	public static double camX = Main.mainCam.x;
+	public static double camY = Main.mainCam.y;
+	public static double camZ = Main.mainCam.z;
+	public static double zSensitivity = Main.zSensitivity;
+	
+	public Point(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.color = Color.black;
+	}
+	
+	public Point(double x, double y, double z, Color color) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.color = color;
+	}
+	
+	public double dist(Point p) {
+		return Math.sqrt(Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2) + Math.pow(p.z - z, 2));
+	}
+	
+	public Point xy() {
+		double rx = camX;
+		double ry = camY;
+		
+		
+		double p = Math.exp(-(z * zSensitivity));
+		if (z == 0) p = 1;
+		
+		rx += (x - camX) * p;
+		ry += (y - camY) * p;
+		
+		Point result = new Point(rx, ry, 0, color);
+		
+		return result;
+	}
+	
+	// public Point xyInt() {
+		// double rx = camX;
+		// double ry = camY;
+		
+		
+		// double p = Math.exp(-z * zSensitivity);
+		
+		// rx += (x - camX) * p;
+		// ry += (y - camY) * p;
+		
+		// Point result = new Point((int) (rx + 0.5), (int) (ry + 0.5), 0);
+		
+		// return result;
+	// }
+	
+	public Point toXYZ(double z) {
+		double p = Math.exp(-(z * zSensitivity));
+		
+		double rx = x;
+		double ry = y;
+		
+		rx += p * camX;
+		ry += p * camY;
+
+		
+		rx -= (camX);
+		ry -= (camY);
+		
+		rx /= p;
+		ry /= p;
+		
+		
+		
+		Point result = new Point(rx, ry, z, color);
+		
+		return result;
+	}
+	
+	
+	public String toString() {
+		return "" + x + ", " + y + ", " + z;
 	}
 }
 
-class BasicObject {
+
+class PointComparator implements Comparator<Point> {
+    public int compare(Point a, Point b) {
+		if (a.z < b.z) return 1;
+		if (a.z > b.z) return -1;
+        return 0;
+    }
+}
+
+
+
+
+
+
+
+class Frame extends JFrame {
+	int frames = 0;
+	int millis = 0;
+	public Frame() {
+		pack();
+		initializeWindow();
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		super.paintComponents(g);
+	}
+	
+	public void initializeWindow() {
+		this.setTitle("Window");
+		this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(new Dimension(500, 500));
+		this.setLocationRelativeTo(null);
+		// Timer fps1 = new Timer();
+		// fps1.schedule(new TimerTask() {
+			// @Override
+			// public void run() {
+				// repaint();
+				
+				
+			// }
+		// }, 0, 16);
+	}
+}
+
+
+
+class Panel extends JPanel {
+	public ArrayList<Object3D> objects;
+	
+	public Panel() {
+		objects = new ArrayList<Object3D>();
+		initializePanel();
+	}
+	
+	public Panel(ArrayList<Object3D> objects) {
+		this.objects = objects;
+		initializePanel();
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		Graphics2D g2D = (Graphics2D) g;
+		
+		ArrayList<Point> allPoints = new ArrayList<Point>();
+		
+		for (int i = 0; i < objects.size(); i++) {
+			
+			for (int j = 0; j < objects.get(i).lines.size(); j++) {
+				for (int k = 0; k < objects.get(i).lines.get(j).points.size(); k++) {
+					allPoints.add(objects.get(i).lines.get(j).points.get(k));
+				}
+			}
+		}
+		
+		//Sorting points by z-value in descending order so objects further away are drawn first, then drawn over by closer objects
+		Collections.sort(allPoints, new PointComparator());
+		
+		for (Point point : allPoints) {
+			Point p = new Point(point.x, point.y, point.z - Point.camZ, point.color).xy();
+			g2D.setColor(point.color);
+			if (!((point.z - Point.camZ) < Point.camZ)) {
+				g2D.drawOval((int) (p.x), (int) (p.y), 1, 1); //Adding 0.5 to round the values to the nearest whole number, in order to prevent holes due to integer conversion
+			}
+		}
+		
+		
+		// g2D.setColor(Color.black);
+		// g2D.drawOval((int) (Main.camX - 2.5), (int) (Main.camY - 2.5), 5, 5);
+		
+	}
+	
+	
+	public void initializePanel() {
+		this.setVisible(true);
+		this.setOpaque(false);
+		this.setBounds(new Rectangle(1920, 1080));
+	}
+}
+
+
+
+class Object3D {
+	public ArrayList<Line> lines;
+	public ArrayList<Point> points;
+	public ExecutorService exec;
+	public int numThreads = 1;
+	
+	public Object3D() {
+		lines = new ArrayList<Line>();
+		points = new ArrayList<Point>();
+		exec = Executors.newFixedThreadPool(1);
+	}
+	
+	public Object3D(int numParts) {
+		lines = new ArrayList<Line>();
+		points = new ArrayList<Point>();
+		exec = Executors.newFixedThreadPool(numParts);
+		numThreads = numParts;
+	}
+	
+	public Object3D(ArrayList<Line> lines) {
+		this.lines = lines;
+		points = new ArrayList<Point>();
+		exec = Executors.newFixedThreadPool(1);
+	}
+	
+	public Object3D(ArrayList<Line> lines, int numParts) {
+		this.lines = lines;
+		points = new ArrayList<Point>();
+		exec = Executors.newFixedThreadPool(numParts);
+		numThreads = numParts;
+	}
+	
+	public Object3D(ArrayList<Line> lines, ArrayList<Point> points, int numParts) {
+		this.lines = lines;
+		this.points = points;
+		exec = Executors.newFixedThreadPool(numParts);
+		numThreads = numParts;
+	}
+	
+	//meant to be overridden
+	public void updateFunc(int index) {
+		
+	}
+	
+	public boolean update() {
+		ArrayList<RenderRunnable> runnables = new ArrayList<RenderRunnable>();
+		
+		
+		for (int i = 0; i < numThreads; i++) {
+			final int[] count = {i};
+			runnables.add(new RenderRunnable() {
+				@Override
+				public void run() {
+					updateFunc(count[0]);
+				}
+			});
+		}
+		
+		ArrayList<FutureTask<Boolean>> tasks = new ArrayList<FutureTask<Boolean>>();
+		for (int i = 0; i < runnables.size(); i++) {
+			tasks.add(new FutureTask<Boolean>(runnables.get(i), true));
+		}
+		
+		for (int i = 0; i < tasks.size(); i++) {
+			exec.submit(tasks.get(i));
+		}
+		
+		try {
+			for (int i = 0; i < tasks.size(); i++) {
+				if (tasks.get(i).get());
+			}
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public void clear() {
+		this.lines = new ArrayList<Line>();
+	}
+}
+
+class Line {
 	public ArrayList<Point> points;
 	
-	
-	public BasicObject() {
-		this.points = new ArrayList<Point>();
+	public Line() {
+		points = new ArrayList<Point>();
 	}
-	public BasicObject(ArrayList<Point> points) {
+	
+	public Line(ArrayList<Point> points) {
 		this.points = points;
-	}
-	
-	public void add(Point p) {
-		this.points.add(p);
-	}
-	
-	public void remove(int index) {
-		this.points.remove(index);
 	}
 }
 
+class Camera {
+	double x;
+	double y;
+	double z;
+	public Camera() {
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
+	}
+	public Camera(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+}
+
+class Render implements Runnable {
+	public ArrayList<Line> lines = new ArrayList<Line>();
+	public ArrayList<Point> points = new ArrayList<Point>();
+	@Override
+	public void run() {
+		
+	}
+}
+
+class RenderRunnable implements Runnable {
+	@Override
+	public void run() {
+		
+	}
+}
