@@ -9,6 +9,11 @@ import java.util.concurrent.*;
 import java.time.Duration;
 import java.time.Instant;
 
+
+/*Reminders/TODO:
+-Fix panel.paintComponent() running during cube.update() (or other way around) to prevent flickering and errors
+*/
+
 public class Main {
 	public static Frame frame;
 	public static Camera mainCam = new Camera(250, 250, 0);
@@ -17,11 +22,13 @@ public class Main {
 	public static Object3D cube;
 	
 	
+	public static Panel panel;
+	
 	public static double millis = 0;
 	
 	public static void main(String[] args) {
 		frame = new Frame();
-		Panel panel = new Panel();
+		/* Panel */ panel = new Panel();
 		frame.add(panel);
 		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); //not necessary, just prevents a bug with Comparator that sends an error message, however this error message is not fatal
 
@@ -111,34 +118,6 @@ public class Main {
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-			
-				// ArrayList<Line> tri1 = tri(a, b, c);
-				// ArrayList<Line> tri2 = tri(a, c, d);
-				// ArrayList<Line> tri3 = tri(a1, b1, c1);
-				// ArrayList<Line> tri4 = tri(a1, c1, d1);
-				// ArrayList<Line> tri5 = tri(a1, a, b1);
-				// ArrayList<Line> tri6 = tri(b1, b, a);
-				// ArrayList<Line> tri7 = tri(b1, b, c);
-				// ArrayList<Line> tri8 = tri(b1, c1, c);
-				// ArrayList<Line> tri9 = tri(d, c, c1);
-				// ArrayList<Line> tri10 = tri(d, d1, c1);
-				// ArrayList<Line> tri11 = tri(a1, a, d1);
-				// ArrayList<Line> tri12 = tri(d1, d, a);
-				
-				// cube.lines = new ArrayList<Line>();
-				
-				// cube.lines.addAll(tri1);
-				// cube.lines.addAll(tri2);
-				// cube.lines.addAll(tri3);
-				// cube.lines.addAll(tri4);
-				// cube.lines.addAll(tri5);
-				// cube.lines.addAll(tri6);
-				// cube.lines.addAll(tri7);
-				// cube.lines.addAll(tri8);
-				// cube.lines.addAll(tri9);
-				// cube.lines.addAll(tri10);
-				// cube.lines.addAll(tri11);
-				// cube.lines.addAll(tri12);
 				
 				for (int i = 0; i < cube.points.size(); i++) {
 					cube.points.get(i).x += Math.cos(millis / 100);
@@ -146,17 +125,13 @@ public class Main {
 					// cube.points.get(i).z += 1;
 				}
 				
+				
 				if (!panel.running) {
-					if (cube.clear()) {
-						if (cube.update()) {
-							panel.repaint();
-						}
+					if (cube.update()) {
+						// System.out.println(Main.panel.running);
+						panel.repaint();
 					}
 				}
-				
-				// cube.clear();
-				// cube.update();
-				// panel.repaint();
 
 				
 				
@@ -387,7 +362,12 @@ class Point {
 		return result;
 	}
 	
+	@Override
+	public Point clone() {
+		return new Point(x, y, z, color);
+	}
 	
+	@Override
 	public String toString() {
 		return "" + x + ", " + y + ", " + z;
 	}
@@ -449,35 +429,45 @@ class Panel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		running = true;
-		Graphics2D g2D = (Graphics2D) g;
-		
-		ArrayList<Point> allPoints = new ArrayList<Point>();
-		
-		
-		for (int i = 0; i < objects.size(); i++) {
-			for (int j = 0; j < objects.get(i).lines.size(); j++) {
-				for (int k = 0; k < objects.get(i).lines.get(j).points.size(); k++) {
-					allPoints.add(objects.get(i).lines.get(j).points.get(k));
+		try {
+			Graphics2D g2D = (Graphics2D) g;
+			
+			ArrayList<Point> allPoints = new ArrayList<Point>();
+			
+			
+			for (int i = 0; i < objects.size(); i++) {
+				ArrayList<Line> lines = objects.get(i).linesClone();
+				for (int j = 0; j < lines.size(); j++) {
+					Line l = lines.get(j).clone();
+					ArrayList<Point> points = l.points;
+					for (int k = 0; k < points.size(); k++) {
+						Point p = points.get(k).clone();
+						allPoints.add(p);
+					}
 				}
 			}
-		}
-		
-		//Sorting points by z-value in descending order so objects further away are drawn first, then drawn over by closer objects
-		Collections.sort(allPoints, new PointComparator());
-		
-		for (Point point : allPoints) {
-			Point p = new Point(point.x, point.y, point.z - Point.camZ, point.color).xy();
-			g2D.setColor(point.color);
-			if (!((point.z - Point.camZ) < Point.camZ)) {
-				g2D.drawOval((int) (p.x), (int) (p.y), 1, 1); //Adding 0.5 to round the values to the nearest whole number, in order to prevent holes due to integer conversion
+			
+			//Sorting points by z-value in descending order so objects further away are drawn first, then drawn over by closer objects
+			Collections.sort(allPoints, new PointComparator());
+			
+			
+			for (Point point : allPoints) {
+				Point p = new Point(point.x, point.y, point.z - Point.camZ, point.color).xy();
+				g2D.setColor(point.color);
+				if (!((point.z - Point.camZ) < Point.camZ)) {
+					g2D.drawOval((int) (p.x), (int) (p.y), 1, 1); //Adding 0.5 to round the values to the nearest whole number, in order to prevent holes due to integer conversion
+				}
 			}
+			
+			
+			// g2D.setColor(Color.black);
+			// g2D.drawOval((int) (Point.camX - 2.5), (int) (Point.camY - 2.5), 5, 5);
+			
+			running = false;
+		} catch (Exception e) {
+			System.out.println("Something went wrong during painting");
+			running = false;
 		}
-		
-		
-		// g2D.setColor(Color.black);
-		// g2D.drawOval((int) (Main.camX - 2.5), (int) (Main.camY - 2.5), 5, 5);
-		
-		running = false;
 	}
 	
 	
@@ -536,7 +526,7 @@ class Object3D {
 	
 	public boolean update() {
 		ArrayList<RenderRunnable> runnables = new ArrayList<RenderRunnable>();
-		
+		int oldSize = lines.size();
 		
 		for (int i = 0; i < numThreads; i++) {
 			final int[] count = {i};
@@ -559,18 +549,34 @@ class Object3D {
 		
 		try {
 			for (int i = 0; i < tasks.size(); i++) {
-				if (tasks.get(i).get());
+				tasks.get(i).get();
 			}
+			
+			for (int i = 0; i < oldSize; i++) {
+				lines.remove(0);
+			}
+			
+			
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
 	}
 	
-	public boolean clear() {
-		this.lines.clear();
-		return true;
+	public ArrayList<Line> linesClone() {
+		ArrayList<Line> newLines = new ArrayList<Line>();
+		for (int i = 0; i < this.lines.size(); i++) {
+			Line l = this.lines.get(i);
+			newLines.add(l.clone());
+		}
+		
+		return newLines;
 	}
+	
+	// public boolean clear() {
+		// this.lines.clear();
+		// return true;
+	// }
 }
 
 class Line {
@@ -582,6 +588,15 @@ class Line {
 	
 	public Line(ArrayList<Point> points) {
 		this.points = points;
+	}
+	
+	@Override
+	public Line clone() {
+		Line result = new Line();
+		for (Point p : points) {
+			result.points.add(p.clone());
+		}
+		return result;
 	}
 }
 
