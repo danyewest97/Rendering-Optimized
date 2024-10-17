@@ -480,48 +480,59 @@ class Panel extends JPanel {
 
 
 
-class Object3D {
+
+class Tri {
+	public Point a;
+	public Point b;
+	public Point c;
 	public ArrayList<Line> lines;
-	public ArrayList<Point> points;
+	public Tri(Point a, Point b, Point c) {
+		this.a = a.clone();
+		this.b = b.clone();
+		this.c = c.clone();
+		lines = Main.tri(a, b, c);
+	}
+	
+}
+
+
+
+class Object3D {
+	public ArrayList<Tri> tris;
 	public ExecutorService exec;
 	public int numThreads = 1;
 	
 	public Object3D() {
 		lines = new ArrayList<Line>();
-		points = new ArrayList<Point>();
 		exec = Executors.newFixedThreadPool(1);
 	}
 	
 	public Object3D(int numParts) {
-		lines = new ArrayList<Line>();
-		points = new ArrayList<Point>();
+		tris = new ArrayList<Tri>();
 		exec = Executors.newFixedThreadPool(numParts);
 		numThreads = numParts;
 	}
 	
-	public Object3D(ArrayList<Line> lines) {
-		this.lines = lines;
-		points = new ArrayList<Point>();
+	public Object3D(ArrayList<Tri> tris) {
+		this.tris = tris;
 		exec = Executors.newFixedThreadPool(1);
 	}
 	
-	public Object3D(ArrayList<Line> lines, int numParts) {
-		this.lines = lines;
-		points = new ArrayList<Point>();
+	public Object3D(ArrayList<Tri> tris, int numParts) {
+		this.tris = tris;
 		exec = Executors.newFixedThreadPool(numParts);
 		numThreads = numParts;
 	}
 	
-	public Object3D(ArrayList<Line> lines, ArrayList<Point> points, int numParts) {
-		this.lines = lines;
-		this.points = points;
+	public Object3D(ArrayList<Tri> tris int numParts) {
+		this.tris = tris;
 		exec = Executors.newFixedThreadPool(numParts);
 		numThreads = numParts;
 	}
 	
-	//meant to be overridden
+
 	public void updateFunc(int index) {
-		
+		tris.get(index).update();
 	}
 	
 	public boolean update() {
