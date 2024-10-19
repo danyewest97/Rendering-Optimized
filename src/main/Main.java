@@ -84,11 +84,94 @@ public class Main {
 		
 		
 		
+		Tri tri1a = new Tri(a, b, c);
+		Tri tri2a = new Tri(a, c, d);
+		Tri tri3a = new Tri(a1, b1, c1);
+		Tri tri4a = new Tri(a1, c1, d1);
+		Tri tri5a = new Tri(a1, a, b1);
+		Tri tri6a = new Tri(b1, b, a);
+		Tri tri7a = new Tri(b1, b, c);
+		Tri tri8a = new Tri(b1, c1, c);
+		Tri tri9a = new Tri(d, c, c1);
+		Tri tri10a = new Tri(d, d1, c1);
+		Tri tri11a = new Tri(a1, a, d1);
+		Tri tri12a = new Tri(d1, d, a);
+		
+		ArrayList<Tri> trisa = new ArrayList<Tri>();
+		trisa.add(tri1a);
+		trisa.add(tri2a);
+		trisa.add(tri3a);
+		trisa.add(tri4a);
+		trisa.add(tri5a);
+		trisa.add(tri6a);
+		trisa.add(tri7a);
+		trisa.add(tri8a);
+		trisa.add(tri9a);
+		trisa.add(tri10a);
+		trisa.add(tri11a);
+		trisa.add(tri12a);
+		
+		Object3D cubea = new Object3D(trisa);
+		
+		
+		
+		Tri tri1b = new Tri(a, b, c);
+		Tri tri2b = new Tri(a, c, d);
+		Tri tri3b = new Tri(a1, b1, c1);
+		Tri tri4b = new Tri(a1, c1, d1);
+		Tri tri5b = new Tri(a1, a, b1);
+		Tri tri6b = new Tri(b1, b, a);
+		Tri tri7b = new Tri(b1, b, c);
+		Tri tri8b = new Tri(b1, c1, c);
+		Tri tri9b = new Tri(d, c, c1);
+		Tri tri10b = new Tri(d, d1, c1);
+		Tri tri11b = new Tri(a1, a, d1);
+		Tri tri12b = new Tri(d1, d, a);
+		
+		ArrayList<Tri> trisb = new ArrayList<Tri>();
+		trisb.add(tri1b);
+		trisb.add(tri2b);
+		trisb.add(tri3b);
+		trisb.add(tri4b);
+		trisb.add(tri5b);
+		trisb.add(tri6b);
+		trisb.add(tri7b);
+		trisb.add(tri8b);
+		trisb.add(tri9b);
+		trisb.add(tri10b);
+		trisb.add(tri11b);
+		trisb.add(tri12b);
+		
+		Object3D cubeb = new Object3D(trisb);
+		
+		
+		
 		
 		
 		panel.objects.add(cube);
 		
+		panel.objects.add(cubea);
 		
+		panel.objects.add(cubeb);
+		
+		
+		for (int i = 0; i < cube.tris.size(); i++) {
+			cube.tris.get(i).a.x += 100;
+			cube.tris.get(i).b.x += 100;
+			cube.tris.get(i).c.x += 100;
+			// cube.tris.get(i).a.y += 100;
+			// cube.tris.get(i).b.y += 100;
+			// cube.tris.get(i).c.y += 100;
+		}
+		
+		for (int i = 0; i < cube.tris.size(); i++) {
+			cube.tris.get(i).a.x += 100;
+			cube.tris.get(i).b.x += 100;
+			cube.tris.get(i).c.x += 100;
+			// cube.tris.get(i).a.y += 100;
+			// cube.tris.get(i).b.y += 100;
+			// cube.tris.get(i).c.y += 100;
+		}
 		
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
@@ -96,28 +179,39 @@ public class Main {
 			public void run() {
 				
 				for (int i = 0; i < cube.tris.size(); i++) {
-					cube.tris.get(i).a.x += 0.1;
-					cube.tris.get(i).b.x += 0.1;
-					cube.tris.get(i).c.x += 0.1;
-					cube.tris.get(i).a.y += 0.1;
-					cube.tris.get(i).b.y += 0.1;
-					cube.tris.get(i).c.y += 0.1;
+					cube.tris.get(i).a.x += Math.cos(millis / 100) * 1;
+					cube.tris.get(i).b.x += Math.cos(millis / 100) * 1;
+					cube.tris.get(i).c.x += Math.cos(millis / 100) * 1;
+					cube.tris.get(i).a.y += Math.sin(millis / 100) * 1;
+					cube.tris.get(i).b.y += Math.sin(millis / 100) * 1;
+					cube.tris.get(i).c.y += Math.sin(millis / 100) * 1;
 				}
 				
 				
 				
+				for (int i = 0; i < cubea.tris.size(); i++) {
+					cubea.tris.get(i).a.x += Math.cos(millis / 250) * 1;
+					cubea.tris.get(i).b.x += Math.cos(millis / 250) * 1;
+					cubea.tris.get(i).c.x += Math.cos(millis / 250) * 1;
+					cubea.tris.get(i).a.y += Math.sin(millis / 170) * 1;
+					cubea.tris.get(i).b.y += Math.sin(millis / 170) * 1;
+					cubea.tris.get(i).c.y += Math.sin(millis / 170) * 1;
+				}
+				
+				
+				for (int i = 0; i < cubeb.tris.size(); i++) {
+					cubeb.tris.get(i).a.z += Math.sin(millis / 250) * 1;
+					cubeb.tris.get(i).b.z += Math.sin(millis / 250) * 1;
+					cubeb.tris.get(i).c.z += Math.sin(millis / 250) * 1;
+				}
+				
+				
+				cube.update();
+				cubea.update();
+				cubeb.update();
 				
 				if (!panel.running) {
-					
-					if (cube.update()) {
-						
-						if (!cube.updating) {
-							
-							panel.repaint();
-							
-							
-						}
-					}
+					panel.repaint();
 				}
 				
 				
@@ -234,12 +328,14 @@ public class Main {
 			double p = (double) i / numPoints; //Either i or numPoints (or both) must be casted to a double so that i / numPoints will not be evaluated as 0
 			
 			double z = a.z + (b.z - a.z) * p;
-			Point add = new Point(a2D.x + (b2D.x - a2D.x) * p, a2D.y + (b2D.y - a2D.y) * p, 0, a.color).toXYZ(z);
-			Point addxy = add.xy();
-			
-			if (!(addxy.x < 0 || addxy.x > width)) {
-				if (!(addxy.y < 0 || addxy.y > height)) {
-					result.points.add(add);
+			if (!(z < Point.camZ)) {
+				Point add = new Point(a2D.x + (b2D.x - a2D.x) * p, a2D.y + (b2D.y - a2D.y) * p, 0, a.color).toXYZ(z);
+				Point addxy = add.xy();
+				
+				if (!(addxy.x < 0 || addxy.x > width)) {
+					if (!(addxy.y < 0 || addxy.y > height)) {
+						result.points.add(add);
+					}
 				}
 			}
 		}
@@ -456,15 +552,15 @@ class Panel extends JPanel {
 			}
 			
 			for (Point point : allPoints) {
-				Point p = point.clone().xy();
+				Point p = point.xy();
 				// g2D.setColor(point.color);
-				if (!((point.z - Point.camZ) < Point.camZ)) {
+				// if (!((point.z - Point.camZ) < Point.camZ)) {
 					// g2D.drawOval((int) (p.x), (int) (p.y), 1, 1); //Adding 0.5 to round the values to the nearest whole number, in order to prevent holes due to integer conversion
 					bImage.setRGB((int) p.x, (int) p.y, p.color.getRGB());
-				}
+				// }
 			}
 			
-			g.setColor(Color.white);
+			// g.setColor(Color.white);
 			g.drawImage(bImage, 0, 0, null);
 			g.dispose();
 			
