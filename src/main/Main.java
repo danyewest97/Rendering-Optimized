@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import java.awt.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.awt.image.*;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -13,6 +14,13 @@ import java.time.Instant;
 /*Reminders/TODO:
 -Fix panel.paintComponent() running during cube.update() (or other way around) to prevent flickering and errors
 */
+
+//to find the time it takes for some code to run (in millis):
+
+// long startTime = System.nanoTime();
+// *code to test*
+// long stopTime = System.nanoTime();
+// System.out.println((stopTime - startTime) / 1000000);
 
 public class Main {
 	public static Frame frame;
@@ -44,66 +52,34 @@ public class Main {
 		Point d1 = new Point(100, 200, 100, Color.yellow);
 		
 		
-		ArrayList<Point> cpoints = new ArrayList<Point>();
-		cpoints.add(a);
-		cpoints.add(b);
-		cpoints.add(c);
-		cpoints.add(d);
-		cpoints.add(a1);
-		cpoints.add(b1);
-		cpoints.add(c1);
-		cpoints.add(d1);
+		Tri tri1 = new Tri(a, b, c);
+		Tri tri2 = new Tri(a, c, d);
+		Tri tri3 = new Tri(a1, b1, c1);
+		Tri tri4 = new Tri(a1, c1, d1);
+		Tri tri5 = new Tri(a1, a, b1);
+		Tri tri6 = new Tri(b1, b, a);
+		Tri tri7 = new Tri(b1, b, c);
+		Tri tri8 = new Tri(b1, c1, c);
+		Tri tri9 = new Tri(d, c, c1);
+		Tri tri10 = new Tri(d, d1, c1);
+		Tri tri11 = new Tri(a1, a, d1);
+		Tri tri12 = new Tri(d1, d, a);
 		
+		ArrayList<Tri> tris = new ArrayList<Tri>();
+		tris.add(tri1);
+		tris.add(tri2);
+		tris.add(tri3);
+		tris.add(tri4);
+		tris.add(tri5);
+		tris.add(tri6);
+		tris.add(tri7);
+		tris.add(tri8);
+		tris.add(tri9);
+		tris.add(tri10);
+		tris.add(tri11);
+		tris.add(tri12);
 		
-		Object3D cube = new Object3D(new ArrayList<Line>(), cpoints, 12) {
-			@Override
-			public void updateFunc(int index) {
-				ArrayList<Line> tri1 = new ArrayList<Line>();
-				ArrayList<Line> tri2 = new ArrayList<Line>();
-				ArrayList<Line> tri3 = new ArrayList<Line>();
-				ArrayList<Line> tri4 = new ArrayList<Line>();
-				ArrayList<Line> tri5 = new ArrayList<Line>();
-				ArrayList<Line> tri6 = new ArrayList<Line>();
-				ArrayList<Line> tri7 = new ArrayList<Line>();
-				ArrayList<Line> tri8 = new ArrayList<Line>();
-				ArrayList<Line> tri9 = new ArrayList<Line>();
-				ArrayList<Line> tri10 = new ArrayList<Line>();
-				ArrayList<Line> tri11 = new ArrayList<Line>();
-				ArrayList<Line> tri12 = new ArrayList<Line>();
-				
-				if (index == 0) tri1 = tri(a, b, c);
-				if (index == 1) tri2 = tri(a, c, d);
-				if (index == 2) tri3 = tri(a1, b1, c1);
-				if (index == 3) tri4 = tri(a1, c1, d1);
-				if (index == 4) tri5 = tri(a1, a, b1);
-				if (index == 5) tri6 = tri(b1, b, a);
-				if (index == 6) tri7 = tri(b1, b, c);
-				if (index == 7) tri8 = tri(b1, c1, c);
-				if (index == 8) tri9 = tri(d, c, c1);
-				if (index == 9) tri10 = tri(d, d1, c1);
-				if (index == 10) tri11 = tri(a1, a, d1);
-				if (index == 11) tri12 = tri(d1, d, a);
-				
-				
-				
-				
-				if (index == 0)  this.lines.addAll(tri1);
-				if (index == 1)  this.lines.addAll(tri2);
-				if (index == 2)  this.lines.addAll(tri3);
-				if (index == 3)  this.lines.addAll(tri4);
-				if (index == 4)  this.lines.addAll(tri5);
-				if (index == 5)  this.lines.addAll(tri6);
-				if (index == 6)  this.lines.addAll(tri7);
-				if (index == 7)  this.lines.addAll(tri8);
-				if (index == 8)  this.lines.addAll(tri9);
-				if (index == 9)  this.lines.addAll(tri10);
-				if (index == 10) this.lines.addAll(tri11);
-				if (index == 11) this.lines.addAll(tri12);
-				
-				
-			}
-		};
-		
+		Object3D cube = new Object3D(tris);
 		
 		
 		
@@ -119,20 +95,31 @@ public class Main {
 			@Override
 			public void run() {
 				
-				for (int i = 0; i < cube.points.size(); i++) {
-					cube.points.get(i).x += Math.cos(millis / 100);
-					cube.points.get(i).y += Math.sin(millis / 100);
-					// cube.points.get(i).z += 1;
+				for (int i = 0; i < cube.tris.size(); i++) {
+					cube.tris.get(i).a.x += 0.1;
+					cube.tris.get(i).b.x += 0.1;
+					cube.tris.get(i).c.x += 0.1;
+					cube.tris.get(i).a.y += 0.1;
+					cube.tris.get(i).b.y += 0.1;
+					cube.tris.get(i).c.y += 0.1;
 				}
+				
+				
 				
 				
 				if (!panel.running) {
+					
 					if (cube.update()) {
-						// System.out.println(Main.panel.running);
-						panel.repaint();
+						
+						if (!cube.updating) {
+							
+							panel.repaint();
+							
+							
+						}
 					}
 				}
-
+				
 				
 				
 				millis++;
@@ -145,6 +132,7 @@ public class Main {
 	
 	
 	public static ArrayList<Line> tri(Point a, Point b, Point c) {
+		
 		ArrayList<Line> result = new ArrayList<Line>();
 
 
@@ -219,6 +207,7 @@ public class Main {
 		result.add(lineArray(e1, e2));
 		result.add(lineArray(e2, e3));
 		result.add(lineArray(e3, e1));
+		
 		
 		return result;
 	}
@@ -429,6 +418,13 @@ class Panel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		running = true;
+		long startTime = System.nanoTime();
+		
+		GraphicsConfiguration gc = this.getGraphicsConfiguration();
+		VolatileImage vImage = gc.createCompatibleVolatileImage(500, 500);
+		BufferedImage bImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+		
+		
 		try {
 			Graphics2D g2D = (Graphics2D) g;
 			
@@ -436,13 +432,16 @@ class Panel extends JPanel {
 			
 			
 			for (int i = 0; i < objects.size(); i++) {
-				ArrayList<Line> lines = objects.get(i).linesClone();
-				for (int j = 0; j < lines.size(); j++) {
-					Line l = lines.get(j).clone();
-					ArrayList<Point> points = l.points;
-					for (int k = 0; k < points.size(); k++) {
-						Point p = points.get(k).clone();
-						allPoints.add(p);
+				ArrayList<Tri> tris = objects.get(i).tris;
+				for (int j = 0; j < tris.size(); j++) {
+					Tri t = tris.get(j);
+					ArrayList<Line> lines = t.lines;
+					for (int k = 0; k < lines.size(); k++) {
+						Line l = lines.get(k);
+						for (int m = 0; m < l.points.size(); m++) {
+							Point p = l.points.get(m);
+							allPoints.add(p);
+						}
 					}
 				}
 			}
@@ -450,15 +449,24 @@ class Panel extends JPanel {
 			//Sorting points by z-value in descending order so objects further away are drawn first, then drawn over by closer objects
 			Collections.sort(allPoints, new PointComparator());
 			
-			
-			for (Point point : allPoints) {
-				Point p = new Point(point.x, point.y, point.z - Point.camZ, point.color).xy();
-				g2D.setColor(point.color);
-				if (!((point.z - Point.camZ) < Point.camZ)) {
-					g2D.drawOval((int) (p.x), (int) (p.y), 1, 1); //Adding 0.5 to round the values to the nearest whole number, in order to prevent holes due to integer conversion
+			for (int i = 0; i < bImage.getWidth(); i++) {
+				for (int j = 0; j < bImage.getHeight(); j++) {
+					bImage.setRGB(i, j, Color.white.getRGB());
 				}
 			}
 			
+			for (Point point : allPoints) {
+				Point p = point.clone().xy();
+				// g2D.setColor(point.color);
+				if (!((point.z - Point.camZ) < Point.camZ)) {
+					// g2D.drawOval((int) (p.x), (int) (p.y), 1, 1); //Adding 0.5 to round the values to the nearest whole number, in order to prevent holes due to integer conversion
+					bImage.setRGB((int) p.x, (int) p.y, p.color.getRGB());
+				}
+			}
+			
+			g.setColor(Color.white);
+			g.drawImage(bImage, 0, 0, null);
+			g.dispose();
 			
 			// g2D.setColor(Color.black);
 			// g2D.drawOval((int) (Point.camX - 2.5), (int) (Point.camY - 2.5), 5, 5);
@@ -468,6 +476,8 @@ class Panel extends JPanel {
 			System.out.println("Something went wrong during painting");
 			running = false;
 		}
+		long stopTime = System.nanoTime();
+		System.out.println((stopTime - startTime) / 1000000);
 	}
 	
 	
@@ -480,53 +490,71 @@ class Panel extends JPanel {
 
 
 
-class Object3D {
+
+class Tri {
+	public Point a;
+	public Point b;
+	public Point c;
 	public ArrayList<Line> lines;
-	public ArrayList<Point> points;
+	public Tri(Point a, Point b, Point c) {
+		this.a = a.clone();
+		this.b = b.clone();
+		this.c = c.clone();
+		lines = Main.tri(a, b, c);
+	}
+	
+	public boolean update() {
+		lines = Main.tri(a, b, c);
+		return true;
+	}
+	
+	@Override
+	public Tri clone() {
+		return new Tri(a.clone(), b.clone(), c.clone());
+	}
+	
+}
+
+
+
+class Object3D {
+	public ArrayList<Tri> tris;
 	public ExecutorService exec;
 	public int numThreads = 1;
+	public boolean updating = false;
 	
 	public Object3D() {
-		lines = new ArrayList<Line>();
-		points = new ArrayList<Point>();
+		tris = new ArrayList<Tri>();
 		exec = Executors.newFixedThreadPool(1);
 	}
 	
 	public Object3D(int numParts) {
-		lines = new ArrayList<Line>();
-		points = new ArrayList<Point>();
+		tris = new ArrayList<Tri>();
 		exec = Executors.newFixedThreadPool(numParts);
 		numThreads = numParts;
 	}
 	
-	public Object3D(ArrayList<Line> lines) {
-		this.lines = lines;
-		points = new ArrayList<Point>();
-		exec = Executors.newFixedThreadPool(1);
+	public Object3D(ArrayList<Tri> tris) {
+		this.tris = tris;
+		exec = Executors.newFixedThreadPool(tris.size());
+		numThreads = tris.size();
 	}
 	
-	public Object3D(ArrayList<Line> lines, int numParts) {
-		this.lines = lines;
-		points = new ArrayList<Point>();
+	public Object3D(ArrayList<Tri> tris, int numParts) {
+		this.tris = tris;
 		exec = Executors.newFixedThreadPool(numParts);
 		numThreads = numParts;
 	}
 	
-	public Object3D(ArrayList<Line> lines, ArrayList<Point> points, int numParts) {
-		this.lines = lines;
-		this.points = points;
-		exec = Executors.newFixedThreadPool(numParts);
-		numThreads = numParts;
-	}
 	
-	//meant to be overridden
-	public void updateFunc(int index) {
-		
+
+	public void updateFunc(int index) {	
+		tris.get(index).update();
 	}
 	
 	public boolean update() {
+		updating = true;
 		ArrayList<RenderRunnable> runnables = new ArrayList<RenderRunnable>();
-		int oldSize = lines.size();
 		
 		for (int i = 0; i < numThreads; i++) {
 			final int[] count = {i};
@@ -547,31 +575,30 @@ class Object3D {
 			exec.submit(tasks.get(i));
 		}
 		
+		
 		try {
+			
 			for (int i = 0; i < tasks.size(); i++) {
 				tasks.get(i).get();
 			}
 			
-			for (int i = 0; i < oldSize; i++) {
-				lines.remove(0);
-			}
-			
-			
+			updating = false;
 			return true;
 		} catch (Exception e) {
+			updating = false;
 			return false;
 		}
 	}
 	
-	public ArrayList<Line> linesClone() {
-		ArrayList<Line> newLines = new ArrayList<Line>();
-		for (int i = 0; i < this.lines.size(); i++) {
-			Line l = this.lines.get(i);
-			newLines.add(l.clone());
-		}
+	// public ArrayList<Tri> trisClone() {
+		// ArrayList<Tri> newTris = new ArrayList<Tri>();
+		// for (int i = 0; i < this.tris.size(); i++) {
+			// Tri t = this.tris.get(i);
+			// newTris.add(t.clone());
+		// }
 		
-		return newLines;
-	}
+		// return newTris;
+	// }
 	
 	// public boolean clear() {
 		// this.lines.clear();
