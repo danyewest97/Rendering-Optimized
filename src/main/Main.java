@@ -28,6 +28,8 @@ public class Main {
 	public static double zSensitivity = 0.003;
 	
 	public static Object3D cube;
+	public static Object3D cubea;
+	public static Object3D cubeb;
 	
 	
 	public static Panel panel;
@@ -86,7 +88,7 @@ public class Main {
 		tris.add(tri11);
 		tris.add(tri12);
 		
-		Object3D cube = new Object3D(tris);
+		cube = new Object3D(tris);
 		
 		
 		
@@ -118,7 +120,7 @@ public class Main {
 		trisa.add(tri11a);
 		trisa.add(tri12a);
 		
-		Object3D cubea = new Object3D(trisa);
+		cubea = new Object3D(trisa);
 		
 		
 		
@@ -149,7 +151,7 @@ public class Main {
 		trisb.add(tri11b);
 		trisb.add(tri12b);
 		
-		Object3D cubeb = new Object3D(trisb);
+		cubeb = new Object3D(trisb);
 		
 		
 		
@@ -164,34 +166,41 @@ public class Main {
 		
 		cube.move(100, 100, 0);
 		
-		Timer t = new Timer();
-		t.schedule(new TimerTask() {
+		// Timer t = new Timer();
+		// t.schedule(new TimerTask() {
+			// @Override
+			// public void run() {
+				// cube.update();
+				// cubea.update();
+				// cubeb.update();
+				
+				// if (!panel.running) {
+					// panel.repaint();
+				// }
+			// }
+		// }, 0, 1);
+		
+		Timer t2 = new Timer();
+		t2.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				long startTime = System.nanoTime();
-				
 				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
 				cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
 				cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
-				
-				cube.update();
-				cubea.update();
-				cubeb.update();
-				
-				if (!panel.running) {
-					panel.repaint();
-				}
-				
-				
-				
 				millis++;
 			}
 		}, 0, 1);
-		
-		
 	}
 	
+	
+	public static void updateFrame() {
+		cube.update();
+		cubea.update();
+		cubeb.update();
+		
+		panel.repaint();
+	}
 	
 	
 	public static ArrayList<Line> tri(Point a, Point b, Point c) {
@@ -554,6 +563,7 @@ class Panel extends JPanel {
 		
 		
 		running = false;
+		Main.updateFrame();
 	}
 	
 	
