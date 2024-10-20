@@ -33,11 +33,18 @@ public class Main {
 	public static Panel panel;
 	
 	public static double millis = 0;
+	public static double avg = 0;
 	
 	public static void main(String[] args) {
+		// System.setProperty("sun.java2d.opengl", "true"); //supposed to enable hardware acceleration
+		
+		
+		
 		frame = new Frame();
 		/* Panel */ panel = new Panel();
 		frame.add(panel);
+		
+		
 		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); //not necessary, just prevents a bug with Comparator that sends an error message, however this error message is not fatal
 
 		
@@ -155,55 +162,17 @@ public class Main {
 		panel.objects.add(cubeb);
 		
 		
-		for (int i = 0; i < cube.tris.size(); i++) {
-			cube.tris.get(i).a.x += 100;
-			cube.tris.get(i).b.x += 100;
-			cube.tris.get(i).c.x += 100;
-			// cube.tris.get(i).a.y += 100;
-			// cube.tris.get(i).b.y += 100;
-			// cube.tris.get(i).c.y += 100;
-		}
-		
-		for (int i = 0; i < cube.tris.size(); i++) {
-			cube.tris.get(i).a.x += 100;
-			cube.tris.get(i).b.x += 100;
-			cube.tris.get(i).c.x += 100;
-			// cube.tris.get(i).a.y += 100;
-			// cube.tris.get(i).b.y += 100;
-			// cube.tris.get(i).c.y += 100;
-		}
+		cube.move(100, 100, 0);
 		
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
+				long startTime = System.nanoTime();
 				
-				for (int i = 0; i < cube.tris.size(); i++) {
-					cube.tris.get(i).a.x += Math.cos(millis / 100) * 1;
-					cube.tris.get(i).b.x += Math.cos(millis / 100) * 1;
-					cube.tris.get(i).c.x += Math.cos(millis / 100) * 1;
-					cube.tris.get(i).a.y += Math.sin(millis / 100) * 1;
-					cube.tris.get(i).b.y += Math.sin(millis / 100) * 1;
-					cube.tris.get(i).c.y += Math.sin(millis / 100) * 1;
-				}
-				
-				
-				
-				for (int i = 0; i < cubea.tris.size(); i++) {
-					cubea.tris.get(i).a.x += Math.cos(millis / 250) * 1;
-					cubea.tris.get(i).b.x += Math.cos(millis / 250) * 1;
-					cubea.tris.get(i).c.x += Math.cos(millis / 250) * 1;
-					cubea.tris.get(i).a.y += Math.sin(millis / 170) * 1;
-					cubea.tris.get(i).b.y += Math.sin(millis / 170) * 1;
-					cubea.tris.get(i).c.y += Math.sin(millis / 170) * 1;
-				}
-				
-				
-				for (int i = 0; i < cubeb.tris.size(); i++) {
-					cubeb.tris.get(i).a.z += Math.sin(millis / 250) * 1;
-					cubeb.tris.get(i).b.z += Math.sin(millis / 250) * 1;
-					cubeb.tris.get(i).c.z += Math.sin(millis / 250) * 1;
-				}
+				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
+				cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
+				cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
 				
 				cube.update();
@@ -375,6 +344,13 @@ class Point {
 	public static double camZ = Main.mainCam.z;
 	public static double zSensitivity = Main.zSensitivity;
 	
+	public Point() {
+		this.x = 0;
+		this.y = 0;
+		this.z = Integer.MAX_VALUE;
+		this.color = Color.white;
+	}
+	
 	public Point(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
@@ -514,66 +490,70 @@ class Panel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		running = true;
-		long startTime = System.nanoTime();
 		
-		GraphicsConfiguration gc = this.getGraphicsConfiguration();
-		VolatileImage vImage = gc.createCompatibleVolatileImage(500, 500);
+		
+		
 		BufferedImage bImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 		
+		//Creating a new points array representing the pixels on the screen
+		Point[][] points2D = new Point[1920][1080];
 		
-		try {
-			Graphics2D g2D = (Graphics2D) g;
-			
-			ArrayList<Point> allPoints = new ArrayList<Point>();
-			
-			
-			for (int i = 0; i < objects.size(); i++) {
-				ArrayList<Tri> tris = objects.get(i).tris;
-				for (int j = 0; j < tris.size(); j++) {
-					Tri t = tris.get(j);
-					ArrayList<Line> lines = t.lines;
-					for (int k = 0; k < lines.size(); k++) {
-						Line l = lines.get(k);
-						for (int m = 0; m < l.points.size(); m++) {
-							Point p = l.points.get(m);
-							allPoints.add(p);
+		Graphics2D g2D = (Graphics2D) g;
+		
+		
+		// long startTime = System.nanoTime();
+		
+		for (int i = 0; i < objects.size(); i++) {
+			ArrayList<Tri> tris = objects.get(i).tris;
+			for (int j = 0; j < tris.size(); j++) {
+				Tri t = tris.get(j);
+				ArrayList<Line> lines = t.lines;
+				for (int k = 0; k < lines.size(); k++) {
+					Line l = lines.get(k);
+					for (int m = 0; m < l.points.size(); m++) {
+						Point pz = l.points.get(m);
+						Point pxy = pz.xy();
+						//The default points in the points2D array are null objects, so checking the z value of one of them will return a NullPointerException
+						//However, if the if statement below returns a NullPointerException, we want to add the current Point, because that means the current point is in
+						//an available position on the screen
+						try {
+							if (points2D[(int) pxy.x][(int) pxy.y].z >= pz.z) {
+								points2D[(int) pxy.x][(int) pxy.y] = new Point(pxy.x, pxy.y, pz.z, pz.color);
+							}
+						} catch (NullPointerException e) {
+							points2D[(int) pxy.x][(int) pxy.y] = new Point(pxy.x, pxy.y, pz.z, pz.color);
 						}
 					}
 				}
 			}
-			
-			//Sorting points by z-value in descending order so objects further away are drawn first, then drawn over by closer objects
-			Collections.sort(allPoints, new PointComparator());
-			
-			for (int i = 0; i < bImage.getWidth(); i++) {
-				for (int j = 0; j < bImage.getHeight(); j++) {
-					bImage.setRGB(i, j, Color.white.getRGB());
-				}
-			}
-			
-			for (Point point : allPoints) {
-				Point p = point.xy();
-				// g2D.setColor(point.color);
-				// if (!((point.z - Point.camZ) < Point.camZ)) {
-					// g2D.drawOval((int) (p.x), (int) (p.y), 1, 1); //Adding 0.5 to round the values to the nearest whole number, in order to prevent holes due to integer conversion
-					bImage.setRGB((int) p.x, (int) p.y, p.color.getRGB());
-				// }
-			}
-			
-			// g.setColor(Color.white);
-			g.drawImage(bImage, 0, 0, null);
-			g.dispose();
-			
-			// g2D.setColor(Color.black);
-			// g2D.drawOval((int) (Point.camX - 2.5), (int) (Point.camY - 2.5), 5, 5);
-			
-			running = false;
-		} catch (Exception e) {
-			System.out.println("Something went wrong during painting");
-			running = false;
 		}
-		long stopTime = System.nanoTime();
-		System.out.println((stopTime - startTime) / 1000000);
+		
+		
+		
+		
+		
+		for (int i = 0; i < bImage.getWidth(); i++) {
+			for (int j = 0; j < bImage.getHeight(); j++) {
+				bImage.setRGB(i, j, Color.white.getRGB());
+			}
+		}
+		
+		for (int i = 0; i < bImage.getWidth(); i++) {
+			for (int j = 0; j < bImage.getHeight(); j++) {
+				Point p = points2D[i][j];
+				if (p != null) bImage.setRGB((int) p.x, (int) p.y, p.color.getRGB());
+			}
+		}
+		
+		// long stopTime = System.nanoTime();
+		// System.out.println(1000 / ((stopTime - startTime) / 1000000));
+		
+		
+		g.drawImage(bImage, 0, 0, null);
+		g.dispose();
+		
+		
+		running = false;
 	}
 	
 	
@@ -686,6 +666,23 @@ class Object3D {
 		}
 	}
 	
+	
+	public void move(double x, double y, double z) {
+		for (Tri t : tris) {
+				t.a.x += x;
+				t.a.y += y;
+				t.a.z += z;
+				
+				t.b.x += x;
+				t.b.y += y;
+				t.b.z += z;
+				
+				t.c.x += x;
+				t.c.y += y;
+				t.c.z += z;
+		}
+		
+	}
 	// public ArrayList<Tri> trisClone() {
 		// ArrayList<Tri> newTris = new ArrayList<Tri>();
 		// for (int i = 0; i < this.tris.size(); i++) {
