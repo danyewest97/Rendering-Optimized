@@ -47,7 +47,6 @@ public class Main {
 		frame.add(panel);
 		
 		
-		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); //not necessary, just prevents a bug with Comparator that sends an error message, however this error message is not fatal
 
 		
 		Point a = new Point(100, 100, 0, Color.red);
