@@ -31,7 +31,7 @@ public class Main {
 	public static Object3D cubea;
 	public static Object3D cubeb;
 	
-	
+	public static Point[][] points2D = new Point[1920][1080];
 	public static Panel panel;
 	
 	public static double millis = 0;
@@ -165,22 +165,8 @@ public class Main {
 		
 		cube.move(100, 100, 0);
 		
-		// Timer t = new Timer();
-		// t.schedule(new TimerTask() {
-			// @Override
-			// public void run() {
-				// cube.update();
-				// cubea.update();
-				// cubeb.update();
-				
-				// if (!panel.running) {
-					// panel.repaint();
-				// }
-			// }
-		// }, 0, 1);
-		
-		Timer t2 = new Timer();
-		t2.schedule(new TimerTask() {
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
@@ -190,16 +176,32 @@ public class Main {
 				millis++;
 			}
 		}, 0, 1);
-	}
-	
-	
-	public static void updateFrame() {
-		cube.update();
-		cubea.update();
-		cubeb.update();
 		
-		panel.repaint();
+		Timer t2 = new Timer();
+		t2.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				
+				if (!panel.running) {
+					cube.update();
+					cubea.update();
+					cubeb.update();
+					
+					if (!panel.running) {
+						// System.out.println(panel.running + ", " + cube.updating);
+						panel.repaint();
+					}
+				}
+				
+				
+			}
+		}, 0, 1);
 	}
+	
+	
+	// public static void updateFrame() {
+		
+	// }
 	
 	
 	public static ArrayList<Line> tri(Point a, Point b, Point c) {
@@ -312,6 +314,7 @@ public class Main {
 				if (!(addxy.x < 0 || addxy.x > width)) {
 					if (!(addxy.y < 0 || addxy.y > height)) {
 						result.points.add(add);
+						add.addToPoints();
 					}
 				}
 			}
@@ -364,6 +367,7 @@ class Point {
 		this.y = y;
 		this.z = z;
 		this.color = Color.black;
+		// addToPoints();
 	}
 	
 	public Point(double x, double y, double z, Color color) {
@@ -371,11 +375,27 @@ class Point {
 		this.y = y;
 		this.z = z;
 		this.color = color;
+		// addToPoints();
 	}
 	
 	public double dist(Point p) {
 		return Math.sqrt(Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2) + Math.pow(p.z - z, 2));
 	}
+	
+	public void addToPoints() {
+		Point temp = this.xy();
+		// System.out.println(temp);
+		if (temp.x <= 1920 && temp.y <= 1080) {
+			try {
+				if (Main.points2D[(int) temp.x][(int) temp.y].z >= this.z) {
+					Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
+				}
+			} catch (NullPointerException e) {
+				Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
+			}
+		}
+	}
+	
 	
 	public Point xy() {
 		double rx = camX;
@@ -504,52 +524,53 @@ class Panel extends JPanel {
 		BufferedImage bImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 		
 		//Creating a new points array representing the pixels on the screen
-		Point[][] points2D = new Point[1920][1080];
+		// Point[][] points2D = new Point[1920][1080];
 		
 		Graphics2D g2D = (Graphics2D) g;
 		
 		
 		// long startTime = System.nanoTime();
 		
-		for (int i = 0; i < objects.size(); i++) {
-			ArrayList<Tri> tris = objects.get(i).tris;
-			for (int j = 0; j < tris.size(); j++) {
-				Tri t = tris.get(j);
-				ArrayList<Line> lines = t.lines;
-				for (int k = 0; k < lines.size(); k++) {
-					Line l = lines.get(k);
-					for (int m = 0; m < l.points.size(); m++) {
-						Point pz = l.points.get(m);
-						Point pxy = pz.xy();
-						//The default points in the points2D array are null objects, so checking the z value of one of them will return a NullPointerException
-						//However, if the if statement below returns a NullPointerException, we want to add the current Point, because that means the current point is in
-						//an available position on the screen
-						try {
-							if (points2D[(int) pxy.x][(int) pxy.y].z >= pz.z) {
-								points2D[(int) pxy.x][(int) pxy.y] = new Point(pxy.x, pxy.y, pz.z, pz.color);
-							}
-						} catch (NullPointerException e) {
-							points2D[(int) pxy.x][(int) pxy.y] = new Point(pxy.x, pxy.y, pz.z, pz.color);
-						}
-					}
+		// for (int i = 0; i < objects.size(); i++) {
+			// ArrayList<Tri> tris = objects.get(i).tris;
+			// for (int j = 0; j < tris.size(); j++) {
+				// Tri t = tris.get(j);
+				// ArrayList<Line> lines = t.lines;
+				// for (int k = 0; k < lines.size(); k++) {
+					// Line l = lines.get(k);
+					// for (int m = 0; m < l.points.size(); m++) {
+						// Point pz = l.points.get(m);
+						// Point pxy = pz.xy();
+						// try {
+							// if (points2D[(int) pxy.x][(int) pxy.y].z >= pz.z) {
+								// points2D[(int) pxy.x][(int) pxy.y] = new Point(pxy.x, pxy.y, pz.z, pz.color);
+							// }
+						// } catch (NullPointerException e) {
+							// points2D[(int) pxy.x][(int) pxy.y] = new Point(pxy.x, pxy.y, pz.z, pz.color);
+						// }
+					// }
+				// }
+			// }
+		// }
+		
+		
+		
+		
+		
+		for (int i = 0; i < bImage.getWidth(); i++) {
+			for (int j = 0; j < bImage.getHeight(); j++) {
+				if (Main.points2D[i][j] == null) {
+					bImage.setRGB(i, j, Color.white.getRGB());
 				}
 			}
 		}
 		
-		
-		
-		
-		
 		for (int i = 0; i < bImage.getWidth(); i++) {
 			for (int j = 0; j < bImage.getHeight(); j++) {
-				bImage.setRGB(i, j, Color.white.getRGB());
-			}
-		}
-		
-		for (int i = 0; i < bImage.getWidth(); i++) {
-			for (int j = 0; j < bImage.getHeight(); j++) {
-				Point p = points2D[i][j];
-				if (p != null) bImage.setRGB((int) p.x, (int) p.y, p.color.getRGB());
+				Point p = Main.points2D[i][j];
+				if (p != null) {
+					bImage.setRGB((int) p.x, (int) p.y, p.color.getRGB());
+				}					
 			}
 		}
 		
@@ -561,8 +582,9 @@ class Panel extends JPanel {
 		g.dispose();
 		
 		
+		Main.points2D = new Point[1920][1080];
 		running = false;
-		Main.updateFrame();
+		// Main.updateFrame();
 	}
 	
 	
