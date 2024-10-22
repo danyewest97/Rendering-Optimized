@@ -31,6 +31,8 @@ public class Main {
 	public static Object3D cubea;
 	public static Object3D cubeb;
 	
+	public static Object3D testObj;
+	
 	public static Point[][] points2D = new Point[1920][1080];
 	public static Panel panel;
 	
@@ -165,6 +167,20 @@ public class Main {
 		
 		cube.move(100, 100, 0);
 		
+		
+		
+		
+		
+		// a.z += 1;
+		// b.z += 1;
+		// c.z += 1;
+		// Tri tri1 = new Tri(a, b, c);
+		// ArrayList<Tri> test = new ArrayList<Tri>();
+		// test.add(tri1);
+		// testObj = new Object3D(test, 1);
+		// panel.objects.add(testObj);
+		
+		
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
 			@Override
@@ -183,9 +199,13 @@ public class Main {
 			public void run() {
 				
 				if (!panel.running) {
+					points2D = new Point[1920][1080];
 					cube.update();
 					cubea.update();
 					cubeb.update();
+					
+					// testObj.update();
+					// testObj.move(0.1, 0.1, 0);
 					
 					if (!panel.running) {
 						// System.out.println(panel.running + ", " + cube.updating);
@@ -229,44 +249,19 @@ public class Main {
 		area /= 2;
 		
 		
-		ArrayList<Point> r = new ArrayList<Point>();
-		r.add(a);
-		
-		int numLines = (int) (a.dist(center) + 1);
-		
-		if (b.dist(center) > numLines) {
-			numLines = (int) (b.dist(center) + 1);
-			r.add(0, b);
-		} else {
-			r.add(b);
-		}
-		if (c.dist(center) > numLines) {
-			numLines = (int) (c.dist(center) + 1);
-			r.add(0, c);
-		} else {
-			if (c.dist(center) < r.get(1).dist(center)) {
-				r.add(c);
-			} else {
-				r.add(1, c);
-			}
-		}
 		
 		// ArrayList<Point> fill = lineArray2D(r.get(0), r.get(1));
-		Point f = r.get(0).xy(); //furthest point
-		Point c1 = r.get(1).xy(); //closer point 1
-		Point c2 = r.get(2).xy(); //closer point 2
-		
-		//Points above in 3D
-		Point fz = r.get(0);
-		Point c1z = r.get(1);
-		Point c2z = r.get(2);
+		Point axy = a.xy(); //furthest point
+		Point bxy = b.xy(); //closer point 1
+		Point cxy = c.xy(); //closer point 2
 
 		
-		int temp = (int) (c1.dist(c2) + 0.5);
+		int temp = (int) (Math.abs(bxy.x - axy.x) + 1);
 		for (int i = 0; i <= temp; i++) {
 			double p = (double) i / temp;
-			Point x = new Point(f.x + (c1.x - f.x) * (p), f.y + (c1.y - f.y) * (p), 0, f.color).toXYZ(fz.z + (c1z.z - fz.z) * (p));
-			Point y = new Point(c2.x + (c1.x - c2.x) * (p), c2.y + (c1.y - c2.y) * (p), 0, c2.color).toXYZ(c2z.z + (c1z.z - c2z.z) * (p));
+			Point x = new Point(axy.x + (bxy.x - axy.x) * (p), axy.y + (bxy.y - axy.y) * (p), 0, axy.color).toXYZ(a.z + (b.z - a.z) * (p));
+			Point y = new Point(axy.x + (bxy.x - axy.x) * (p), axy.y + (cxy.y - axy.y) * (p), 0, axy.color).toXYZ(a.z + (c.z - a.z) * (p));
+			
 			
 			result.add(lineArray(x, y));
 		}
@@ -277,9 +272,9 @@ public class Main {
 		Point e2 = new Point(b.x, b.y, b.z, Color.black);
 		Point e3 = new Point(c.x, c.y, c.z, Color.black);
 		
-		result.add(lineArray(e1, e2));
-		result.add(lineArray(e2, e3));
-		result.add(lineArray(e3, e1));
+		// result.add(lineArray(e1, e2));
+		// result.add(lineArray(e2, e3));
+		// result.add(lineArray(e3, e1));
 		
 		
 		return result;
@@ -380,6 +375,10 @@ class Point {
 	
 	public double dist(Point p) {
 		return Math.sqrt(Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2) + Math.pow(p.z - z, 2));
+	}
+	
+	public double xdist(Point p) {
+		return p.x - this.x;
 	}
 	
 	public void addToPoints() {
@@ -582,7 +581,7 @@ class Panel extends JPanel {
 		g.dispose();
 		
 		
-		Main.points2D = new Point[1920][1080];
+		// Main.points2D = new Point[1920][1080];
 		running = false;
 		// Main.updateFrame();
 	}
