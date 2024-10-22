@@ -62,132 +62,132 @@ public class Main {
 		Point d1 = new Point(100, 200, 100, Color.yellow);
 		
 		
-		Tri tri1 = new Tri(a, b, c);
-		Tri tri2 = new Tri(a, c, d);
-		Tri tri3 = new Tri(a1, b1, c1);
-		Tri tri4 = new Tri(a1, c1, d1);
-		Tri tri5 = new Tri(a1, a, b1);
-		Tri tri6 = new Tri(b1, b, a);
-		Tri tri7 = new Tri(b1, b, c);
-		Tri tri8 = new Tri(b1, c1, c);
-		Tri tri9 = new Tri(d, c, c1);
-		Tri tri10 = new Tri(d, d1, c1);
-		Tri tri11 = new Tri(a1, a, d1);
-		Tri tri12 = new Tri(d1, d, a);
-		
-		ArrayList<Tri> tris = new ArrayList<Tri>();
-		tris.add(tri1);
-		tris.add(tri2);
-		tris.add(tri3);
-		tris.add(tri4);
-		tris.add(tri5);
-		tris.add(tri6);
-		tris.add(tri7);
-		tris.add(tri8);
-		tris.add(tri9);
-		tris.add(tri10);
-		tris.add(tri11);
-		tris.add(tri12);
-		
-		cube = new Object3D(tris);
-		
-		
-		
-		
-		Tri tri1a = new Tri(a, b, c);
-		Tri tri2a = new Tri(a, c, d);
-		Tri tri3a = new Tri(a1, b1, c1);
-		Tri tri4a = new Tri(a1, c1, d1);
-		Tri tri5a = new Tri(a1, a, b1);
-		Tri tri6a = new Tri(b1, b, a);
-		Tri tri7a = new Tri(b1, b, c);
-		Tri tri8a = new Tri(b1, c1, c);
-		Tri tri9a = new Tri(d, c, c1);
-		Tri tri10a = new Tri(d, d1, c1);
-		Tri tri11a = new Tri(a1, a, d1);
-		Tri tri12a = new Tri(d1, d, a);
-		
-		ArrayList<Tri> trisa = new ArrayList<Tri>();
-		trisa.add(tri1a);
-		trisa.add(tri2a);
-		trisa.add(tri3a);
-		trisa.add(tri4a);
-		trisa.add(tri5a);
-		trisa.add(tri6a);
-		trisa.add(tri7a);
-		trisa.add(tri8a);
-		trisa.add(tri9a);
-		trisa.add(tri10a);
-		trisa.add(tri11a);
-		trisa.add(tri12a);
-		
-		cubea = new Object3D(trisa);
-		
-		
-		
-		Tri tri1b = new Tri(a, b, c);
-		Tri tri2b = new Tri(a, c, d);
-		Tri tri3b = new Tri(a1, b1, c1);
-		Tri tri4b = new Tri(a1, c1, d1);
-		Tri tri5b = new Tri(a1, a, b1);
-		Tri tri6b = new Tri(b1, b, a);
-		Tri tri7b = new Tri(b1, b, c);
-		Tri tri8b = new Tri(b1, c1, c);
-		Tri tri9b = new Tri(d, c, c1);
-		Tri tri10b = new Tri(d, d1, c1);
-		Tri tri11b = new Tri(a1, a, d1);
-		Tri tri12b = new Tri(d1, d, a);
-		
-		ArrayList<Tri> trisb = new ArrayList<Tri>();
-		trisb.add(tri1b);
-		trisb.add(tri2b);
-		trisb.add(tri3b);
-		trisb.add(tri4b);
-		trisb.add(tri5b);
-		trisb.add(tri6b);
-		trisb.add(tri7b);
-		trisb.add(tri8b);
-		trisb.add(tri9b);
-		trisb.add(tri10b);
-		trisb.add(tri11b);
-		trisb.add(tri12b);
-		
-		cubeb = new Object3D(trisb);
-		
-		
-		
-		
-		
-		panel.objects.add(cube);
-		
-		panel.objects.add(cubea);
-		
-		panel.objects.add(cubeb);
-		
-		
-		cube.move(100, 100, 0);
-		
-		
-		
-		
-		
-		// a.z += 1;
-		// b.z += 1;
-		// c.z += 1;
 		// Tri tri1 = new Tri(a, b, c);
-		// ArrayList<Tri> test = new ArrayList<Tri>();
-		// test.add(tri1);
-		// testObj = new Object3D(test, 1);
-		// panel.objects.add(testObj);
+		// Tri tri2 = new Tri(a, c, d);
+		// Tri tri3 = new Tri(a1, b1, c1);
+		// Tri tri4 = new Tri(a1, c1, d1);
+		// Tri tri5 = new Tri(a1, a, b1);
+		// Tri tri6 = new Tri(b1, b, a);
+		// Tri tri7 = new Tri(b1, b, c);
+		// Tri tri8 = new Tri(b1, c1, c);
+		// Tri tri9 = new Tri(d, c, c1);
+		// Tri tri10 = new Tri(d, d1, c1);
+		// Tri tri11 = new Tri(a1, a, d1);
+		// Tri tri12 = new Tri(d1, d, a);
+		
+		// ArrayList<Tri> tris = new ArrayList<Tri>();
+		// tris.add(tri1);
+		// tris.add(tri2);
+		// tris.add(tri3);
+		// tris.add(tri4);
+		// tris.add(tri5);
+		// tris.add(tri6);
+		// tris.add(tri7);
+		// tris.add(tri8);
+		// tris.add(tri9);
+		// tris.add(tri10);
+		// tris.add(tri11);
+		// tris.add(tri12);
+		
+		// cube = new Object3D(tris);
+		
+		
+		
+		
+		// Tri tri1a = new Tri(a, b, c);
+		// Tri tri2a = new Tri(a, c, d);
+		// Tri tri3a = new Tri(a1, b1, c1);
+		// Tri tri4a = new Tri(a1, c1, d1);
+		// Tri tri5a = new Tri(a1, a, b1);
+		// Tri tri6a = new Tri(b1, b, a);
+		// Tri tri7a = new Tri(b1, b, c);
+		// Tri tri8a = new Tri(b1, c1, c);
+		// Tri tri9a = new Tri(d, c, c1);
+		// Tri tri10a = new Tri(d, d1, c1);
+		// Tri tri11a = new Tri(a1, a, d1);
+		// Tri tri12a = new Tri(d1, d, a);
+		
+		// ArrayList<Tri> trisa = new ArrayList<Tri>();
+		// trisa.add(tri1a);
+		// trisa.add(tri2a);
+		// trisa.add(tri3a);
+		// trisa.add(tri4a);
+		// trisa.add(tri5a);
+		// trisa.add(tri6a);
+		// trisa.add(tri7a);
+		// trisa.add(tri8a);
+		// trisa.add(tri9a);
+		// trisa.add(tri10a);
+		// trisa.add(tri11a);
+		// trisa.add(tri12a);
+		
+		// cubea = new Object3D(trisa);
+		
+		
+		
+		// Tri tri1b = new Tri(a, b, c);
+		// Tri tri2b = new Tri(a, c, d);
+		// Tri tri3b = new Tri(a1, b1, c1);
+		// Tri tri4b = new Tri(a1, c1, d1);
+		// Tri tri5b = new Tri(a1, a, b1);
+		// Tri tri6b = new Tri(b1, b, a);
+		// Tri tri7b = new Tri(b1, b, c);
+		// Tri tri8b = new Tri(b1, c1, c);
+		// Tri tri9b = new Tri(d, c, c1);
+		// Tri tri10b = new Tri(d, d1, c1);
+		// Tri tri11b = new Tri(a1, a, d1);
+		// Tri tri12b = new Tri(d1, d, a);
+		
+		// ArrayList<Tri> trisb = new ArrayList<Tri>();
+		// trisb.add(tri1b);
+		// trisb.add(tri2b);
+		// trisb.add(tri3b);
+		// trisb.add(tri4b);
+		// trisb.add(tri5b);
+		// trisb.add(tri6b);
+		// trisb.add(tri7b);
+		// trisb.add(tri8b);
+		// trisb.add(tri9b);
+		// trisb.add(tri10b);
+		// trisb.add(tri11b);
+		// trisb.add(tri12b);
+		
+		// cubeb = new Object3D(trisb);
+		
+		
+		
+		
+		
+		// panel.objects.add(cube);
+		
+		// panel.objects.add(cubea);
+		
+		// panel.objects.add(cubeb);
+		
+		
+		// cube.move(100, 100, 0);
+		
+		
+		
+		
+		
+		a.z += 1;
+		b.z += 1;
+		c.z += 1;
+		Tri tri1 = new Tri(a, b, c);
+		ArrayList<Tri> test = new ArrayList<Tri>();
+		test.add(tri1);
+		testObj = new Object3D(test, 1);
+		panel.objects.add(testObj);
 		
 		
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
-				cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
-				cubeb.move(0, 0, Math.sin(millis / 250) * 1);
+				// cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
+				// cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
+				// cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
 				millis++;
 			}
@@ -200,12 +200,13 @@ public class Main {
 				
 				if (!panel.running) {
 					points2D = new Point[1920][1080];
-					cube.update();
-					cubea.update();
-					cubeb.update();
+					// cube.update();
+					// cubea.update();
+					// cubeb.update();
 					
-					// testObj.update();
-					// testObj.move(0.1, 0.1, 0);
+					testObj.update();
+					// testObj.move(0, 0.1, 0);
+					tri1.a.z += 1;
 					
 					if (!panel.running) {
 						// System.out.println(panel.running + ", " + cube.updating);
@@ -227,50 +228,98 @@ public class Main {
 	public static ArrayList<Line> tri(Point a, Point b, Point c) {
 		
 		ArrayList<Line> result = new ArrayList<Line>();
-
-
-		Point center = new Point((a.x + b.x + c.x) / 3, (a.y + b.y + c.y) / 3, (a.z + b.z + c.z) / 3, Color.red);
-		
-		Line line1 = lineArray(a, b);
-		Line line2 = lineArray(b, c);
-		Line line3 = lineArray(c, a);
 		
 		
+		// Point center = new Point((a.x + b.x + c.x) / 3, (a.y + b.y + c.y) / 3, (a.z + b.z + c.z) / 3, Color.red);
 		
-		double area = a.dist(b);
+		// Line line1 = lineArray(a, b);
+		// Line line2 = lineArray(b, c);
+		// Line line3 = lineArray(c, a);
 		
 		
-		Point areaPoint = new Point(a.x, a.y, a.z, c.color);
-		for (Point p : line1.points) {
-			if (c.dist(p) < c.dist(areaPoint)) areaPoint = p;
+		
+		// double area = a.dist(b);
+		
+		
+		// Point areaPoint = new Point(a.x, a.y, a.z, c.color);
+		// for (Point p : line1.points) {
+			// if (c.dist(p) < c.dist(areaPoint)) areaPoint = p;
+		// }
+		
+		// area *= c.dist(areaPoint);
+		// area /= 2;
+		
+		
+		ArrayList<Point> furthest = new ArrayList<Point>();
+		
+		
+		Point a2D = a.xy();
+		Point b2D = b.xy();
+		Point c2D = c.xy();
+		
+		furthest.add(a2D);
+		if (b2D.x < a2D.x) {
+			furthest.add(0, b2D);
+		} else {
+			furthest.add(b2D);
 		}
 		
-		area *= c.dist(areaPoint);
-		area /= 2;
-		
+		if (c2D.x < furthest.get(0).x) {
+			furthest.add(0, c2D);
+		} else if (c2D.x < furthest.get(1).x) {
+			furthest.add(1, c2D);
+		} else {
+			furthest.add(c2D);
+		}
 		
 		
 		// ArrayList<Point> fill = lineArray2D(r.get(0), r.get(1));
-		Point axy = a.xy(); //furthest point
-		Point bxy = b.xy(); //closer point 1
-		Point cxy = c.xy(); //closer point 2
-
+		Point axy = furthest.get(0); //furthest point
+		Point bxy = furthest.get(1); //closer point 1
+		Point cxy = furthest.get(2); //closer point 2
 		
-		int temp = (int) (Math.abs(bxy.x - axy.x) + 1);
-		for (int i = 0; i <= temp; i++) {
-			double p = (double) i / temp;
-			Point x = new Point(axy.x + (bxy.x - axy.x) * (p), axy.y + (bxy.y - axy.y) * (p), 0, axy.color).toXYZ(a.z + (b.z - a.z) * (p));
-			Point y = new Point(axy.x + (bxy.x - axy.x) * (p), axy.y + (cxy.y - axy.y) * (p), 0, axy.color).toXYZ(a.z + (c.z - a.z) * (p));
+		// Line1 equation: f(x) = axy.x + ((bxy.y - axy.y) / (bxy.x - axy.x)) * x
+		// Line2 equation: f(x) = bxy.x + ((cxy.y - bxy.y) / (cxy.x - bxy.x)) * x
+		// Line3 equation: f(x) = cxy.x + ((cxy.y - axy.y) / (cxy.x - axy.x)) * x
+		
+		// System.out.println(axy.x + ", " + bxy.x + ", " + cxy.x);
+		
+		
+		for (int i = 0; i <= (int) (bxy.x - axy.x); i++) {
+			double p1 = i / (bxy.x - axy.x);
+			double p2 = i / (cxy.x - axy.x);
+			
+			Point x = new Point(axy.x + ((bxy.x - axy.x) * p1), axy.y + ((bxy.y - axy.y) * p1), 0, axy.color).toXYZ((b.z - a.z) * p1);
+			x.addToPoints();
 			
 			
-			result.add(lineArray(x, y));
+			Point y = new Point(axy.x + ((cxy.x - axy.x) * p2), axy.y + ((cxy.y - axy.y) * p2), 0, axy.color).toXYZ((c.z - a.z) * p2);
+			y.addToPoints();
+			
+			// result.add(lineArray(x, y));
 		}
+		
+		
+		for (int i = 0; i <= (int) (cxy.x - bxy.x); i++) {
+			double p1 = i / (cxy.x - bxy.x);
+			double p2 = i / (axy.x - bxy.x);
+			
+			Point x = new Point(bxy.x + ((cxy.x - bxy.x) * p1), bxy.y + ((cxy.y - bxy.y) * p1), 0, bxy.color).toXYZ((c.z - b.z) * p1);
+			x.addToPoints();
+			
+			
+			Point y = new Point(bxy.x + ((axy.x - bxy.x) * p2), bxy.y + ((axy.y - bxy.y) * p2), 0, bxy.color).toXYZ((a.z - b.z) * p2);
+			y.addToPoints();
+			
+			// result.add(lineArray(x, y));
+		}
+		
 		
 				
 		//Adding black edges
-		Point e1 = new Point(a.x, a.y, a.z, Color.black);
-		Point e2 = new Point(b.x, b.y, b.z, Color.black);
-		Point e3 = new Point(c.x, c.y, c.z, Color.black);
+		// Point e1 = new Point(a.x, a.y, a.z, Color.black);
+		// Point e2 = new Point(b.x, b.y, b.z, Color.black);
+		// Point e3 = new Point(c.x, c.y, c.z, Color.black);
 		
 		// result.add(lineArray(e1, e2));
 		// result.add(lineArray(e2, e3));
