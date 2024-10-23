@@ -362,9 +362,9 @@ public class Main {
 				//The percent, as a decimal, to lerp from the first point to the last point
 				double p = (double) (i - b2D.y) / numPoints; //Either i or numPoints (or both) must be casted to a double so that i / numPoints will not be evaluated as 0
 				
-				double z = a.z + (b.z - a.z) * p;
+				double z = b.z + (a.z - b.z) * p;
 				if (!(z < Point.camZ)) {
-					Point add = new Point(a2D.x, i, 0, a.color).toXYZ(z);
+					Point add = new Point(b2D.x, i, 0, b.color).toXYZ(z);
 					Point addxy = add.xy();
 					
 					if (!(addxy.x < 0 || addxy.x > width)) {
