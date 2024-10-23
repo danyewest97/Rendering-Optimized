@@ -228,33 +228,40 @@ public class Main {
 		
 		
 		ArrayList<Point> r = new ArrayList<Point>();
+		ArrayList<Point> rz = new ArrayList<Point>();
 		r.add(a2D);
+		rz.add(a);
 		
 		
 		if (b2D.x < a2D.x) {
 			r.add(0, b2D);
+			rz.add(0, b);
 		} else {
 			r.add(b2D);
+			rz.add(b);
 		}
 		if (c2D.x < r.get(0).x) {
 			r.add(0, c2D);
+			rz.add(0, c);
 		} else {
 			if (c2D.x < r.get(1).x) {
 				r.add(1, c2D);
+				rz.add(1, c);
 			} else {
 				r.add(c2D);
+				rz.add(c);
 			}
 		}
 		
 		// ArrayList<Point> fill = lineArray2D(r.get(0), r.get(1));
-		Point x = r.get(0).xy(); //furthest point
-		Point y = r.get(1).xy(); //closer point 1
-		Point z = r.get(2).xy(); //closer point 2
+		Point x = r.get(0); //furthest point
+		Point y = r.get(1); //closer point 1
+		Point z = r.get(2); //closer point 2
 		
 		//Points above in 3D
-		Point xz = r.get(0);
-		Point yz = r.get(1);
-		Point zz = r.get(2);
+		Point xz = rz.get(0);
+		Point yz = rz.get(1);
+		Point zz = rz.get(2);
 		
 		
 		for (int i = (int) (x.x + 1); i <= (int) z.x; i++) {
