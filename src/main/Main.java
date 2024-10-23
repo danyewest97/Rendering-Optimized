@@ -165,6 +165,14 @@ public class Main {
 		
 		cube.move(100, 100, 0);
 		
+		
+		
+		// Tri tri1 = new Tri(a, b, c);
+		// ArrayList<Tri> temp = new ArrayList<Tri>();
+		// temp.add(tri1);
+		// Object3D triangle = new Object3D(temp);
+		// panel.objects.add(triangle);
+		
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
 			@Override
@@ -187,6 +195,12 @@ public class Main {
 					cubea.update();
 					cubeb.update();
 					
+					// tri1.a.z += 0.3;
+					// tri1.b.x += 0.1;
+					// tri1.c.x += 0.1;
+					
+					// triangle.update();
+					
 					if (!panel.running) {
 						// System.out.println(panel.running + ", " + cube.updating);
 						panel.repaint();
@@ -207,68 +221,67 @@ public class Main {
 	public static ArrayList<Line> tri(Point a, Point b, Point c) {
 		
 		ArrayList<Line> result = new ArrayList<Line>();
-
-
-		Point center = new Point((a.x + b.x + c.x) / 3, (a.y + b.y + c.y) / 3, (a.z + b.z + c.z) / 3, Color.red);
 		
-		Line line1 = lineArray(a, b);
-		Line line2 = lineArray(b, c);
-		Line line3 = lineArray(c, a);
-		
-		
-		
-		double area = a.dist(b);
-		
-		
-		Point areaPoint = new Point(a.x, a.y, a.z, c.color);
-		for (Point p : line1.points) {
-			if (c.dist(p) < c.dist(areaPoint)) areaPoint = p;
-		}
-		
-		area *= c.dist(areaPoint);
-		area /= 2;
+		Point a2D = a.xy();
+		Point b2D = b.xy();
+		Point c2D = c.xy();
 		
 		
 		ArrayList<Point> r = new ArrayList<Point>();
-		r.add(a);
+		r.add(a2D);
 		
-		int numLines = (int) (a.dist(center) + 1);
 		
-		if (b.dist(center) > numLines) {
-			numLines = (int) (b.dist(center) + 1);
-			r.add(0, b);
+		if (b2D.x < a2D.x) {
+			r.add(0, b2D);
 		} else {
-			r.add(b);
+			r.add(b2D);
 		}
-		if (c.dist(center) > numLines) {
-			numLines = (int) (c.dist(center) + 1);
-			r.add(0, c);
+		if (c2D.x < r.get(0).x) {
+			r.add(0, c2D);
 		} else {
-			if (c.dist(center) < r.get(1).dist(center)) {
-				r.add(c);
+			if (c2D.x < r.get(1).x) {
+				r.add(1, c2D);
 			} else {
-				r.add(1, c);
+				r.add(c2D);
 			}
 		}
 		
 		// ArrayList<Point> fill = lineArray2D(r.get(0), r.get(1));
-		Point f = r.get(0).xy(); //furthest point
-		Point c1 = r.get(1).xy(); //closer point 1
-		Point c2 = r.get(2).xy(); //closer point 2
+		Point x = r.get(0).xy(); //furthest point
+		Point y = r.get(1).xy(); //closer point 1
+		Point z = r.get(2).xy(); //closer point 2
 		
 		//Points above in 3D
-		Point fz = r.get(0);
-		Point c1z = r.get(1);
-		Point c2z = r.get(2);
-
+		Point xz = r.get(0);
+		Point yz = r.get(1);
+		Point zz = r.get(2);
 		
-		int temp = (int) (c1.dist(c2) + 0.5);
-		for (int i = 0; i <= temp; i++) {
-			double p = (double) i / temp;
-			Point x = new Point(f.x + (c1.x - f.x) * (p), f.y + (c1.y - f.y) * (p), 0, f.color).toXYZ(fz.z + (c1z.z - fz.z) * (p));
-			Point y = new Point(c2.x + (c1.x - c2.x) * (p), c2.y + (c1.y - c2.y) * (p), 0, c2.color).toXYZ(c2z.z + (c1z.z - c2z.z) * (p));
+		
+		for (int i = (int) (x.x + 1); i <= (int) z.x; i++) {
+			double p1 = (double) (i - x.x) / (z.x - x.x);
+			double p2;
+			if (i <= y.x) p2 = (double) (i - x.x) / (y.x - x.x);
+			else p2 = (double) (i - y.x) / (z.x - y.x);
 			
-			result.add(lineArray(x, y));
+			//Had to add this because p2 was getting negative when i was equal to or very close to x.x (since y.x - x.x is evaluated as 0 (or a decimal) and causes p2 to be very positive or very negative
+			//There is still a single point being generated that shouldn't be, this can be fixed by adding one to the start value of i, but this also removes
+			//a point that should be in the triangle
+			if (p2 < 0) p2 = 0;
+			
+			Point add1 = new Point(i, x.y + (z.y - x.y) * (p1), 0, x.color).toXYZ(xz.z + (zz.z - xz.z) * (p1));
+			
+			// add1.addToPoints();
+			
+			Point add2;
+			if (i <= y.x) {
+				add2 = new Point(i, x.y + (y.y - x.y) * (p2), 0, x.color).toXYZ(xz.z + (yz.z - xz.z) * (p2));
+			} else {
+				add2 = new Point(i, y.y + (z.y - y.y) * (p2), 0, y.color).toXYZ(yz.z + (zz.z - yz.z) * (p2));
+			}
+			// add2.addToPoints();
+			
+			
+			result.add(verticalLineArray(add1, add2));
 		}
 		
 				
@@ -319,6 +332,65 @@ public class Main {
 				}
 			}
 		}
+		
+		return result;
+	}
+	
+	//Vertical line array, used for generating triangles
+	public static Line verticalLineArray(Point a, Point b) {
+		Dimension size = frame.getContentPane().getSize();
+		int width = size.width;
+		int height = size.height;
+		
+		Line result = new Line();
+		
+		Point a2D = a.xy();
+		Point b2D = b.xy();
+		
+		int numPoints = (int) (Math.abs(b2D.y - a2D.y) + 1);
+
+
+		if (b2D.y < a2D.y) {
+			for (int i = (int) b2D.y; i <= (int) a2D.y; i++) {
+				//The percent, as a decimal, to lerp from the first point to the last point
+				double p = (double) (i - b2D.y) / numPoints; //Either i or numPoints (or both) must be casted to a double so that i / numPoints will not be evaluated as 0
+				
+				double z = a.z + (b.z - a.z) * p;
+				if (!(z < Point.camZ)) {
+					Point add = new Point(a2D.x, i, 0, a.color).toXYZ(z);
+					Point addxy = add.xy();
+					
+					if (!(addxy.x < 0 || addxy.x > width)) {
+						if (!(addxy.y < 0 || addxy.y > height)) {
+							result.points.add(add);
+							add.addToPoints();
+						}
+					}
+				}
+			}
+		}
+		
+		
+		if (a2D.y <= b2D.y) {
+			for (int i = (int) a2D.y; i <= (int) b2D.y; i++) {
+				//The percent, as a decimal, to lerp from the first point to the last point
+				double p = (double) (i - a2D.y) / numPoints; //Either i or numPoints (or both) must be casted to a double so that i / numPoints will not be evaluated as 0
+				
+				double z = a.z + (b.z - a.z) * p;
+				if (!(z < Point.camZ)) {
+					Point add = new Point(a2D.x, i, 0, a.color).toXYZ(z);
+					Point addxy = add.xy();
+					
+					if (!(addxy.x < 0 || addxy.x > width)) {
+						if (!(addxy.y < 0 || addxy.y > height)) {
+							result.points.add(add);
+							add.addToPoints();
+						}
+					}
+				}
+			}
+		}
+		
 		
 		return result;
 	}
