@@ -181,7 +181,9 @@ public class Main {
 				cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
 				cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
+				// tri1.a.z += 0.3;
 				millis++;
+				
 			}
 		}, 0, 1);
 		
@@ -195,7 +197,7 @@ public class Main {
 					cubea.update();
 					cubeb.update();
 					
-					// tri1.a.z += 0.3;
+					
 					// tri1.b.x += 0.1;
 					// tri1.c.x += 0.1;
 					
@@ -219,7 +221,6 @@ public class Main {
 	
 	
 	public static ArrayList<Line> tri(Point a, Point b, Point c) {
-		
 		ArrayList<Line> result = new ArrayList<Line>();
 		
 		Point a2D = a.xy();
@@ -463,6 +464,9 @@ class Point {
 	
 	public void addToPoints() {
 		Point temp = this.xy();
+		//adding 0.5 to round to the nearest number, which should account for floating point precision errors
+		temp.x += 0.5;
+		temp.y += 0.5;
 		// System.out.println(temp);
 		if (temp.x <= 1920 && temp.y <= 1080) {
 			try {
