@@ -77,90 +77,90 @@ public class Main {
 		tris.add(tri1);
 		tris.add(tri2);
 		tris.add(tri3);
-		tris.add(tri4);
-		tris.add(tri5);
-		tris.add(tri6);
-		tris.add(tri7);
-		tris.add(tri8);
-		tris.add(tri9);
-		tris.add(tri10);
-		tris.add(tri11);
-		tris.add(tri12);
+		// tris.add(tri4);
+		// tris.add(tri5);
+		// tris.add(tri6);
+		// tris.add(tri7);
+		// tris.add(tri8);
+		// tris.add(tri9);
+		// tris.add(tri10);
+		// tris.add(tri11);
+		// tris.add(tri12);
 		
 		cube = new Object3D(tris);
 		
 		
 		
 		
-		Tri tri1a = new Tri(a, b, c);
-		Tri tri2a = new Tri(a, c, d);
-		Tri tri3a = new Tri(a1, b1, c1);
-		Tri tri4a = new Tri(a1, c1, d1);
-		Tri tri5a = new Tri(a1, a, b1);
-		Tri tri6a = new Tri(b1, b, a);
-		Tri tri7a = new Tri(b1, b, c);
-		Tri tri8a = new Tri(b1, c1, c);
-		Tri tri9a = new Tri(d, c, c1);
-		Tri tri10a = new Tri(d, d1, c1);
-		Tri tri11a = new Tri(a1, a, d1);
-		Tri tri12a = new Tri(d1, d, a);
+		// Tri tri1a = new Tri(a, b, c);
+		// Tri tri2a = new Tri(a, c, d);
+		// Tri tri3a = new Tri(a1, b1, c1);
+		// Tri tri4a = new Tri(a1, c1, d1);
+		// Tri tri5a = new Tri(a1, a, b1);
+		// Tri tri6a = new Tri(b1, b, a);
+		// Tri tri7a = new Tri(b1, b, c);
+		// Tri tri8a = new Tri(b1, c1, c);
+		// Tri tri9a = new Tri(d, c, c1);
+		// Tri tri10a = new Tri(d, d1, c1);
+		// Tri tri11a = new Tri(a1, a, d1);
+		// Tri tri12a = new Tri(d1, d, a);
 		
-		ArrayList<Tri> trisa = new ArrayList<Tri>();
-		trisa.add(tri1a);
-		trisa.add(tri2a);
-		trisa.add(tri3a);
-		trisa.add(tri4a);
-		trisa.add(tri5a);
-		trisa.add(tri6a);
-		trisa.add(tri7a);
-		trisa.add(tri8a);
-		trisa.add(tri9a);
-		trisa.add(tri10a);
-		trisa.add(tri11a);
-		trisa.add(tri12a);
+		// ArrayList<Tri> trisa = new ArrayList<Tri>();
+		// trisa.add(tri1a);
+		// trisa.add(tri2a);
+		// trisa.add(tri3a);
+		// trisa.add(tri4a);
+		// trisa.add(tri5a);
+		// trisa.add(tri6a);
+		// trisa.add(tri7a);
+		// trisa.add(tri8a);
+		// trisa.add(tri9a);
+		// trisa.add(tri10a);
+		// trisa.add(tri11a);
+		// trisa.add(tri12a);
 		
-		cubea = new Object3D(trisa);
-		
-		
-		
-		Tri tri1b = new Tri(a, b, c);
-		Tri tri2b = new Tri(a, c, d);
-		Tri tri3b = new Tri(a1, b1, c1);
-		Tri tri4b = new Tri(a1, c1, d1);
-		Tri tri5b = new Tri(a1, a, b1);
-		Tri tri6b = new Tri(b1, b, a);
-		Tri tri7b = new Tri(b1, b, c);
-		Tri tri8b = new Tri(b1, c1, c);
-		Tri tri9b = new Tri(d, c, c1);
-		Tri tri10b = new Tri(d, d1, c1);
-		Tri tri11b = new Tri(a1, a, d1);
-		Tri tri12b = new Tri(d1, d, a);
-		
-		ArrayList<Tri> trisb = new ArrayList<Tri>();
-		trisb.add(tri1b);
-		trisb.add(tri2b);
-		trisb.add(tri3b);
-		trisb.add(tri4b);
-		trisb.add(tri5b);
-		trisb.add(tri6b);
-		trisb.add(tri7b);
-		trisb.add(tri8b);
-		trisb.add(tri9b);
-		trisb.add(tri10b);
-		trisb.add(tri11b);
-		trisb.add(tri12b);
-		
-		cubeb = new Object3D(trisb);
+		// cubea = new Object3D(trisa);
 		
 		
 		
+		// Tri tri1b = new Tri(a, b, c);
+		// Tri tri2b = new Tri(a, c, d);
+		// Tri tri3b = new Tri(a1, b1, c1);
+		// Tri tri4b = new Tri(a1, c1, d1);
+		// Tri tri5b = new Tri(a1, a, b1);
+		// Tri tri6b = new Tri(b1, b, a);
+		// Tri tri7b = new Tri(b1, b, c);
+		// Tri tri8b = new Tri(b1, c1, c);
+		// Tri tri9b = new Tri(d, c, c1);
+		// Tri tri10b = new Tri(d, d1, c1);
+		// Tri tri11b = new Tri(a1, a, d1);
+		// Tri tri12b = new Tri(d1, d, a);
+		
+		// ArrayList<Tri> trisb = new ArrayList<Tri>();
+		// trisb.add(tri1b);
+		// trisb.add(tri2b);
+		// trisb.add(tri3b);
+		// trisb.add(tri4b);
+		// trisb.add(tri5b);
+		// trisb.add(tri6b);
+		// trisb.add(tri7b);
+		// trisb.add(tri8b);
+		// trisb.add(tri9b);
+		// trisb.add(tri10b);
+		// trisb.add(tri11b);
+		// trisb.add(tri12b);
+		
+		// cubeb = new Object3D(trisb);
 		
 		
-		panel.objects.add(cube);
 		
-		panel.objects.add(cubea);
 		
-		panel.objects.add(cubeb);
+		
+		// panel.objects.add(cube);
+		
+		// panel.objects.add(cubea);
+		
+		// panel.objects.add(cubeb);
 		
 		
 		cube.move(100, 100, 0);
@@ -178,8 +178,8 @@ public class Main {
 			@Override
 			public void run() {
 				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
-				cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
-				cubeb.move(0, 0, Math.sin(millis / 250) * 1);
+				// cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
+				// cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
 				// tri1.a.z += 0.3;
 				millis++;
@@ -193,19 +193,23 @@ public class Main {
 			public void run() {
 				
 				if (!panel.running) {
-					cube.update();
-					cubea.update();
-					cubeb.update();
-					
-					
-					// tri1.b.x += 0.1;
-					// tri1.c.x += 0.1;
-					
-					// triangle.update();
-					
-					if (!panel.running) {
-						// System.out.println(panel.running + ", " + cube.updating);
-						panel.repaint();
+					if (cube.update()) {
+						// if (cubea.update()) {
+							// if (cubeb.update()) {
+								if (!panel.running) {
+									// tri1.b.x += 0.1;
+									// tri1.c.x += 0.1;
+									
+									// System.out.println(panel.running);
+									
+									// triangle.update();
+									if (!panel.running) {
+										// System.out.println(panel.running + ", " + cube.updating);
+										panel.repaint();
+									}
+								}
+							// }
+						// }
 					}
 				}
 				
@@ -284,7 +288,7 @@ public class Main {
 			if (i <= y.x) {
 				add2 = new Point(i, x.y + (y.y - x.y) * (p2), 0, x.color).toXYZ(xz.z + (yz.z - xz.z) * (p2));
 			} else {
-				add2 = new Point(i, y.y + (z.y - y.y) * (p2), 0, y.color).toXYZ(yz.z + (zz.z - yz.z) * (p2));
+				add2 = new Point(i, y.y + (z.y - y.y) * (p2), 0, x.color).toXYZ(yz.z + (zz.z - yz.z) * (p2));
 			}
 			// add2.addToPoints();
 			
@@ -334,10 +338,10 @@ public class Main {
 				
 				if (!(addxy.x < 0 || addxy.x > width)) {
 					if (!(addxy.y < 0 || addxy.y > height)) {
-						result.points.add(add);
 						add.addToPoints();
 					}
 				}
+				result.points.add(add);
 			}
 		}
 		
@@ -370,10 +374,10 @@ public class Main {
 					
 					if (!(addxy.x < 0 || addxy.x > width)) {
 						if (!(addxy.y < 0 || addxy.y > height)) {
-							result.points.add(add);
 							add.addToPoints();
 						}
 					}
+					result.points.add(add);
 				}
 			}
 		}
@@ -391,10 +395,10 @@ public class Main {
 					
 					if (!(addxy.x < 0 || addxy.x > width)) {
 						if (!(addxy.y < 0 || addxy.y > height)) {
-							result.points.add(add);
 							add.addToPoints();
 						}
 					}
+					result.points.add(add);
 				}
 			}
 		}
@@ -403,20 +407,19 @@ public class Main {
 		return result;
 	}
 	
-	public static ArrayList<Point> trueLineArray(Point a, Point b) {
-		ArrayList<Point> result = new ArrayList<Point>();
+	// public static ArrayList<Point> trueLineArray(Point a, Point b) {
+		// ArrayList<Point> result = new ArrayList<Point>();
 		
-		int numPoints = (int) (a.dist(b) + 1); //trying to use a2D and b2D in order to not find more points than can be drawn, however I am unsure if it is working 100% properly
+		// int numPoints = (int) (a.dist(b) + 1); //trying to use a2D and b2D in order to not find more points than can be drawn, however I am unsure if it is working 100% properly
 		
-		for (int i = 0; i <= numPoints; i++) {
-			//The percent, as a decimal, to lerp from the first point to the last point
-			double p = (double) i / numPoints; //Either i or numPoints (or both) must be casted to a double so that i / numPoints will not be evaluated as 0
+		// for (int i = 0; i <= numPoints; i++) {
+			// double p = (double) i / numPoints; //Either i or numPoints (or both) must be casted to a double so that i / numPoints will not be evaluated as 0
 			
-			result.add(new Point(a.x + (b.x - a.x) * p, a.y + (b.y - a.y) * p, a.z + (b.z - a.z) * p, a.color));
-		}
+			// result.add(new Point(a.x + (b.x - a.x) * p, a.y + (b.y - a.y) * p, a.z + (b.z - a.z) * p, a.color));
+		// }
 		
-		return result;
-	}
+		// return result;
+	// }
 	
 	
 }
@@ -471,7 +474,12 @@ class Point {
 		if (temp.x <= 1920 && temp.y <= 1080) {
 			try {
 				if (Main.points2D[(int) temp.x][(int) temp.y].z >= this.z) {
-					Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
+					if (Main.points2D[(int) temp.x][(int) temp.y].z == this.z) {
+						//Will implement later, I intend to average the colors of two points that land on the same pixel and have the same z-value
+						Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
+					} else {
+						Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
+					}
 				}
 			} catch (NullPointerException e) {
 				Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
@@ -570,7 +578,7 @@ class Frame extends JFrame {
 	
 	@Override
 	public void paint(Graphics g) {
-		super.paintComponents(g);
+		// super.paintComponents(g);
 	}
 	
 	public void initializeWindow() {
@@ -601,7 +609,7 @@ class Panel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		running = true;
-		
+		super.paintComponents(g);
 		
 		
 		BufferedImage bImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
@@ -661,7 +669,7 @@ class Panel extends JPanel {
 		// System.out.println(1000 / ((stopTime - startTime) / 1000000));
 		
 		
-		g.drawImage(bImage, 0, 0, null);
+		g.drawImage(bImage, 0, 0, this);
 		g.dispose();
 		
 		
@@ -776,6 +784,7 @@ class Object3D {
 			return true;
 		} catch (Exception e) {
 			updating = false;
+			e.printStackTrace();
 			return false;
 		}
 	}
