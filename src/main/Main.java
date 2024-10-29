@@ -77,11 +77,11 @@ public class Main {
 		tris.add(tri1);
 		tris.add(tri2);
 		tris.add(tri3);
-		// tris.add(tri4);
-		// tris.add(tri5);
-		// tris.add(tri6);
-		// tris.add(tri7);
-		// tris.add(tri8);
+		tris.add(tri4);
+		tris.add(tri5);
+		tris.add(tri6);
+		tris.add(tri7);
+		tris.add(tri8);
 		// tris.add(tri9);
 		// tris.add(tri10);
 		// tris.add(tri11);
@@ -471,15 +471,15 @@ class Point {
 		temp.x += 0.5;
 		temp.y += 0.5;
 		// System.out.println(temp);
-		if (temp.x <= 1920 && temp.y <= 1080) {
+		if (temp.x <= 1920 && temp.y <= 1080 && temp.x >= 0 && temp.y >= 0) {
 			try {
 				if (Main.points2D[(int) temp.x][(int) temp.y].z >= this.z) {
-					if (Main.points2D[(int) temp.x][(int) temp.y].z == this.z) {
+					// if (Main.points2D[(int) temp.x][(int) temp.y].z == this.z) {
 						//Will implement later, I intend to average the colors of two points that land on the same pixel and have the same z-value
+						// Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
+					// } else {
 						Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
-					} else {
-						Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
-					}
+					// }
 				}
 			} catch (NullPointerException e) {
 				Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
