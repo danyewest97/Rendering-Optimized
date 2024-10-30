@@ -74,14 +74,14 @@ public class Main {
 		Tri tri12 = new Tri(d1, d, a);
 		
 		ArrayList<Tri> tris = new ArrayList<Tri>();
-		tris.add(tri1);
+		// tris.add(tri1);
 		tris.add(tri2);
-		tris.add(tri3);
-		tris.add(tri4);
-		tris.add(tri5);
-		tris.add(tri6);
-		tris.add(tri7);
-		tris.add(tri8);
+		// tris.add(tri3);
+		// tris.add(tri4);
+		// tris.add(tri5);
+		// tris.add(tri6);
+		// tris.add(tri7);
+		// tris.add(tri8);
 		// tris.add(tri9);
 		// tris.add(tri10);
 		// tris.add(tri11);
@@ -177,7 +177,7 @@ public class Main {
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
+				// cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
 				// cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
 				// cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
@@ -194,20 +194,14 @@ public class Main {
 				
 				if (!panel.running) {
 					if (cube.update()) {
+						// if (panel.running) System.out.println(panel.running);
 						// if (cubea.update()) {
 							// if (cubeb.update()) {
-								if (!panel.running) {
-									// tri1.b.x += 0.1;
-									// tri1.c.x += 0.1;
-									
-									// System.out.println(panel.running);
-									
-									// triangle.update();
+								// if (!panel.running) {
 									if (!panel.running) {
-										// System.out.println(panel.running + ", " + cube.updating);
 										panel.repaint();
 									}
-								}
+								// }
 							// }
 						// }
 					}
@@ -226,6 +220,7 @@ public class Main {
 	
 	public static ArrayList<Line> tri(Point a, Point b, Point c) {
 		ArrayList<Line> result = new ArrayList<Line>();
+		
 		
 		Point a2D = a.xy();
 		Point b2D = b.xy();
@@ -280,15 +275,15 @@ public class Main {
 			//a point that should be in the triangle
 			if (p2 < 0) p2 = 0;
 			
-			Point add1 = new Point(i, x.y + (z.y - x.y) * (p1), 0, x.color).toXYZ(xz.z + (zz.z - xz.z) * (p1));
+			Point add1 = new Point(i, x.y + (z.y - x.y) * (p1), 0, a.color).toXYZ(xz.z + (zz.z - xz.z) * (p1));
 			
 			// add1.addToPoints();
 			
 			Point add2;
 			if (i <= y.x) {
-				add2 = new Point(i, x.y + (y.y - x.y) * (p2), 0, x.color).toXYZ(xz.z + (yz.z - xz.z) * (p2));
+				add2 = new Point(i, x.y + (y.y - x.y) * (p2), 0, a.color).toXYZ(xz.z + (yz.z - xz.z) * (p2));
 			} else {
-				add2 = new Point(i, y.y + (z.y - y.y) * (p2), 0, x.color).toXYZ(yz.z + (zz.z - yz.z) * (p2));
+				add2 = new Point(i, y.y + (z.y - y.y) * (p2), 0, a.color).toXYZ(yz.z + (zz.z - yz.z) * (p2));
 			}
 			// add2.addToPoints();
 			
@@ -470,19 +465,21 @@ class Point {
 		//adding 0.5 to round to the nearest number, which should account for floating point precision errors
 		temp.x += 0.5;
 		temp.y += 0.5;
+		int row = (int) temp.x;
+		int column = (int) temp.y;
 		// System.out.println(temp);
-		if (temp.x <= 1920 && temp.y <= 1080 && temp.x >= 0 && temp.y >= 0) {
+		if (temp.x < 1920 && temp.y < 1080 && temp.x >= 0 && temp.y >= 0) {
 			try {
-				if (Main.points2D[(int) temp.x][(int) temp.y].z >= this.z) {
+				if (Main.points2D[row][column].z >= this.z) {
 					// if (Main.points2D[(int) temp.x][(int) temp.y].z == this.z) {
 						//Will implement later, I intend to average the colors of two points that land on the same pixel and have the same z-value
 						// Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
 					// } else {
-						Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
+						Main.points2D[row][column] = new Point(temp.x, temp.y, this.z, this.color);
 					// }
 				}
 			} catch (NullPointerException e) {
-				Main.points2D[(int) temp.x][(int) temp.y] = new Point(temp.x, temp.y, this.z, this.color);
+				Main.points2D[row][column] = new Point(temp.x, temp.y, this.z, this.color);
 			}
 		}
 	}
@@ -609,44 +606,13 @@ class Panel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		running = true;
-		super.paintComponents(g);
+		super.paintComponent(g);
 		
 		
 		BufferedImage bImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 		
-		//Creating a new points array representing the pixels on the screen
-		// Point[][] points2D = new Point[1920][1080];
 		
 		Graphics2D g2D = (Graphics2D) g;
-		
-		
-		// long startTime = System.nanoTime();
-		
-		// for (int i = 0; i < objects.size(); i++) {
-			// ArrayList<Tri> tris = objects.get(i).tris;
-			// for (int j = 0; j < tris.size(); j++) {
-				// Tri t = tris.get(j);
-				// ArrayList<Line> lines = t.lines;
-				// for (int k = 0; k < lines.size(); k++) {
-					// Line l = lines.get(k);
-					// for (int m = 0; m < l.points.size(); m++) {
-						// Point pz = l.points.get(m);
-						// Point pxy = pz.xy();
-						// try {
-							// if (points2D[(int) pxy.x][(int) pxy.y].z >= pz.z) {
-								// points2D[(int) pxy.x][(int) pxy.y] = new Point(pxy.x, pxy.y, pz.z, pz.color);
-							// }
-						// } catch (NullPointerException e) {
-							// points2D[(int) pxy.x][(int) pxy.y] = new Point(pxy.x, pxy.y, pz.z, pz.color);
-						// }
-					// }
-				// }
-			// }
-		// }
-		
-		
-		
-		
 		
 		for (int i = 0; i < bImage.getWidth(); i++) {
 			for (int j = 0; j < bImage.getHeight(); j++) {
@@ -665,8 +631,8 @@ class Panel extends JPanel {
 			}
 		}
 		
-		// long stopTime = System.nanoTime();
-		// System.out.println(1000 / ((stopTime - startTime) / 1000000));
+		if (Main.points2D[150][150].color == Color.white) System.out.println("darn");
+		
 		
 		
 		g.drawImage(bImage, 0, 0, this);
@@ -714,79 +680,26 @@ class Tri {
 }
 
 
-
 class Object3D {
 	public ArrayList<Tri> tris;
-	public ExecutorService exec;
-	public int numThreads = 1;
 	public boolean updating = false;
 	
 	public Object3D() {
 		tris = new ArrayList<Tri>();
-		exec = Executors.newFixedThreadPool(1);
-	}
-	
-	public Object3D(int numParts) {
-		tris = new ArrayList<Tri>();
-		exec = Executors.newFixedThreadPool(numParts);
-		numThreads = numParts;
 	}
 	
 	public Object3D(ArrayList<Tri> tris) {
 		this.tris = tris;
-		exec = Executors.newFixedThreadPool(tris.size());
-		numThreads = tris.size();
 	}
 	
-	public Object3D(ArrayList<Tri> tris, int numParts) {
-		this.tris = tris;
-		exec = Executors.newFixedThreadPool(numParts);
-		numThreads = numParts;
-	}
-	
-	
-
-	public void updateFunc(int index) {	
-		tris.get(index).update();
-	}
 	
 	public boolean update() {
 		updating = true;
-		ArrayList<RenderRunnable> runnables = new ArrayList<RenderRunnable>();
-		
-		for (int i = 0; i < numThreads; i++) {
-			final int[] count = {i};
-			runnables.add(new RenderRunnable() {
-				@Override
-				public void run() {
-					updateFunc(count[0]);
-				}
-			});
+		for (int i = 0; i < tris.size(); i++) {
+			tris.get(i).update();
 		}
-		
-		ArrayList<FutureTask<Boolean>> tasks = new ArrayList<FutureTask<Boolean>>();
-		for (int i = 0; i < runnables.size(); i++) {
-			tasks.add(new FutureTask<Boolean>(runnables.get(i), true));
-		}
-		
-		for (int i = 0; i < tasks.size(); i++) {
-			exec.submit(tasks.get(i));
-		}
-		
-		
-		try {
-			
-			for (int i = 0; i < tasks.size(); i++) {
-				tasks.get(i).get();
-			}
-			
-			updating = false;
-			return true;
-		} catch (Exception e) {
-			updating = false;
-			e.printStackTrace();
-			return false;
-		}
+		updating = false;
+		return true;
 	}
 	
 	
@@ -806,21 +719,102 @@ class Object3D {
 		}
 		
 	}
-	// public ArrayList<Tri> trisClone() {
-		// ArrayList<Tri> newTris = new ArrayList<Tri>();
-		// for (int i = 0; i < this.tris.size(); i++) {
-			// Tri t = this.tris.get(i);
-			// newTris.add(t.clone());
-		// }
-		
-		// return newTris;
+}
+
+
+
+// class Object3D {
+	// public ArrayList<Tri> tris;
+	// public ExecutorService exec;
+	// public int numThreads = 1;
+	// public boolean updating = false;
+	
+	// public Object3D() {
+		// tris = new ArrayList<Tri>();
+		// exec = Executors.newFixedThreadPool(1);
 	// }
 	
-	// public boolean clear() {
-		// this.lines.clear();
-		// return true;
+	// public Object3D(int numParts) {
+		// tris = new ArrayList<Tri>();
+		// exec = Executors.newFixedThreadPool(numParts);
+		// numThreads = numParts;
 	// }
-}
+	
+	// public Object3D(ArrayList<Tri> tris) {
+		// this.tris = tris;
+		// exec = Executors.newFixedThreadPool(tris.size());
+		// numThreads = tris.size();
+	// }
+	
+	// public Object3D(ArrayList<Tri> tris, int numParts) {
+		// this.tris = tris;
+		// exec = Executors.newFixedThreadPool(numParts);
+		// numThreads = numParts;
+	// }
+	
+	
+
+	// public void updateFunc(int index) {	
+		// tris.get(index).update();
+	// }
+	
+	// public boolean update() {
+		// updating = true;
+		// ArrayList<RenderRunnable> runnables = new ArrayList<RenderRunnable>();
+		
+		// for (int i = 0; i < numThreads; i++) {
+			// final int[] count = {i};
+			// runnables.add(new RenderRunnable() {
+				// @Override
+				// public void run() {
+					// updateFunc(count[0]);
+				// }
+			// });
+		// }
+		
+		// ArrayList<FutureTask<Boolean>> tasks = new ArrayList<FutureTask<Boolean>>();
+		// for (int i = 0; i < runnables.size(); i++) {
+			// tasks.add(new FutureTask<Boolean>(runnables.get(i), true));
+		// }
+		
+		// for (int i = 0; i < tasks.size(); i++) {
+			// exec.submit(tasks.get(i));
+		// }
+		
+		
+		// try {
+			
+			// for (int i = 0; i < tasks.size(); i++) {
+				// tasks.get(i).get();
+			// }
+			
+			// updating = false;
+			// return true;
+		// } catch (Exception e) {
+			// updating = false;
+			// e.printStackTrace();
+			// return false;
+		// }
+	// }
+	
+	
+	// public void move(double x, double y, double z) {
+		// for (Tri t : tris) {
+				// t.a.x += x;
+				// t.a.y += y;
+				// t.a.z += z;
+				
+				// t.b.x += x;
+				// t.b.y += y;
+				// t.b.z += z;
+				
+				// t.c.x += x;
+				// t.c.y += y;
+				// t.c.z += z;
+		// }
+		
+	// }
+// }
 
 class Line {
 	public ArrayList<Point> points;
