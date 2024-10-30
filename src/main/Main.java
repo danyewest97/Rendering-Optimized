@@ -604,12 +604,7 @@ class Panel extends JPanel {
 	}
 	
 	@Override
-	public void update(Graphics g) {
-		paint(g);
-	}
-	
-	@Override
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		running = true;
 		super.paintComponent(g);
 		
