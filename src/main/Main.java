@@ -74,18 +74,18 @@ public class Main {
 		Tri tri12 = new Tri(d1, d, a);
 		
 		ArrayList<Tri> tris = new ArrayList<Tri>();
-		// tris.add(tri1);
+		tris.add(tri1);
 		tris.add(tri2);
-		// tris.add(tri3);
-		// tris.add(tri4);
-		// tris.add(tri5);
-		// tris.add(tri6);
-		// tris.add(tri7);
-		// tris.add(tri8);
-		// tris.add(tri9);
-		// tris.add(tri10);
-		// tris.add(tri11);
-		// tris.add(tri12);
+		tris.add(tri3);
+		tris.add(tri4);
+		tris.add(tri5);
+		tris.add(tri6);
+		tris.add(tri7);
+		tris.add(tri8);
+		tris.add(tri9);
+		tris.add(tri10);
+		tris.add(tri11);
+		tris.add(tri12);
 		
 		cube = new Object3D(tris);
 		
@@ -177,7 +177,7 @@ public class Main {
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				// cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
+				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
 				// cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
 				// cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
@@ -604,7 +604,12 @@ class Panel extends JPanel {
 	}
 	
 	@Override
-	public void paintComponent(Graphics g) {
+	public void update(Graphics g) {
+		paint(g);
+	}
+	
+	@Override
+	public void paint(Graphics g) {
 		running = true;
 		super.paintComponent(g);
 		
@@ -630,9 +635,6 @@ class Panel extends JPanel {
 				}					
 			}
 		}
-		
-		if (Main.points2D[150][150].color == Color.white) System.out.println("darn");
-		
 		
 		
 		g.drawImage(bImage, 0, 0, this);
