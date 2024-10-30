@@ -301,7 +301,6 @@ public class Main {
 		result.add(lineArray(e2, e3));
 		result.add(lineArray(e3, e1));
 		
-		
 		return result;
 	}
 	
