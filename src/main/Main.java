@@ -74,18 +74,18 @@ public class Main {
 		Tri tri12 = new Tri(d1, d, a);
 		
 		ArrayList<Tri> tris = new ArrayList<Tri>();
-		tris.add(tri1);
+		// tris.add(tri1);
 		tris.add(tri2);
-		tris.add(tri3);
-		tris.add(tri4);
-		tris.add(tri5);
-		tris.add(tri6);
-		tris.add(tri7);
-		tris.add(tri8);
-		tris.add(tri9);
-		tris.add(tri10);
-		tris.add(tri11);
-		tris.add(tri12);
+		// tris.add(tri3);
+		// tris.add(tri4);
+		// tris.add(tri5);
+		// tris.add(tri6);
+		// tris.add(tri7);
+		// tris.add(tri8);
+		// tris.add(tri9);
+		// tris.add(tri10);
+		// tris.add(tri11);
+		// tris.add(tri12);
 		
 		cube = new Object3D(tris);
 		
@@ -163,7 +163,7 @@ public class Main {
 		// panel.objects.add(cubeb);
 		
 		
-		cube.move(100, 100, 0);
+		// cube.move(100, 100, 0);
 		
 		
 		
@@ -177,7 +177,7 @@ public class Main {
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
+				// cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
 				// cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
 				// cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
@@ -293,13 +293,14 @@ public class Main {
 		
 				
 		//Adding black edges
-		Point e1 = new Point(a.x - 0.5, a.y - 0.5, a.z, Color.black);
-		Point e2 = new Point(b.x - 0.5, b.y - 0.5, b.z, Color.black);
-		Point e3 = new Point(c.x - 0.5, c.y - 0.5, c.z, Color.black);
+		Point e1 = new Point(a.x, a.y, a.z, Color.black);
+		Point e2 = new Point(b.x, b.y, b.z, Color.black);
+		Point e3 = new Point(c.x, c.y, c.z, Color.black);
 		
 		result.add(lineArray(e1, e2));
 		result.add(lineArray(e2, e3));
 		result.add(lineArray(e3, e1));
+		
 		
 		return result;
 	}
@@ -629,6 +630,15 @@ class Panel extends JPanel {
 				}					
 			}
 		}
+		
+		
+		//debugging
+		// try {
+			// if (Main.points2D[150][150].color == Color.white) System.out.println("darn");
+		// } catch (Exception e) {
+			// System.out.println(e);
+			// System.out.println(Main.cube.tris.get(0).lines.get(0).points.size());
+		// }
 		
 		
 		g.drawImage(bImage, 0, 0, this);
