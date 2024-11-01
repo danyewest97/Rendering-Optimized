@@ -37,9 +37,6 @@ public class Main {
 	public static double millis = 0;
 	public static double avg = 0;
 	
-	
-	public static double debugZ = 0;
-	
 	public static void main(String[] args) {
 		// System.setProperty("sun.java2d.opengl", "true"); //supposed to enable hardware acceleration
 		
@@ -181,7 +178,6 @@ public class Main {
 			@Override
 			public void run() {
 				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
-				debugZ += Math.sin(millis / 100) * 1;
 				// cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
 				// cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
@@ -198,18 +194,28 @@ public class Main {
 				
 				if (!panel.running) {
 					if (cube.update()) {
-						// String str = panel.running + ", " + cube.update();
-						// if (str.substring(0, 3).equals("true")) System.out.println(str);
-						if (!panel.running) {
-							panel.repaint();
-						}
+						// if (panel.running) System.out.println(panel.running);
+						// if (cubea.update()) {
+							// if (cubeb.update()) {
+								// if (!panel.running) {
+									if (!panel.running) {
+										panel.repaint();
+									}
+								// }
+							// }
+						// }
 					}
 				}
+				
 				
 			}
 		}, 0, 1);
 	}
 	
+	
+	// public static void updateFrame() {
+		
+	// }
 	
 	
 	public static ArrayList<Line> tri(Point a, Point b, Point c) {
@@ -282,9 +288,6 @@ public class Main {
 			// add2.addToPoints();
 			
 			
-			//for debugging
-			if (add1.z < -0.1) System.out.println("flicker");
-			
 			result.add(verticalLineArray(add1, add2));
 		}
 		
@@ -351,14 +354,7 @@ public class Main {
 		Point b2D = b.xy();
 		
 		int numPoints = (int) (Math.abs(b2D.y - a2D.y) + 1);
-		
-		
-		//may not be necessary
-		result.points.add(a2D);
-		result.points.add(b2D);
-		a.addToPoints();
-		b.addToPoints();
-		
+
 
 		if (b2D.y < a2D.y) {
 			for (int i = (int) b2D.y; i <= (int) a2D.y; i++) {
@@ -400,6 +396,7 @@ public class Main {
 				}
 			}
 		}
+		
 		
 		return result;
 	}
@@ -594,7 +591,6 @@ class Frame extends JFrame {
 class Panel extends JPanel {
 	public ArrayList<Object3D> objects;
 	public boolean running = false;
-	// public BufferedImage oldBuffer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 	
 	public Panel() {
 		objects = new ArrayList<Object3D>();
@@ -615,6 +611,8 @@ class Panel extends JPanel {
 		BufferedImage bImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 		
 		
+		Graphics2D g2D = (Graphics2D) g;
+		
 		for (int i = 0; i < bImage.getWidth(); i++) {
 			for (int j = 0; j < bImage.getHeight(); j++) {
 				if (Main.points2D[i][j] == null) {
@@ -632,16 +630,6 @@ class Panel extends JPanel {
 			}
 		}
 		
-		// try {
-			// Point debugPoint = Main.cube.tris.get(0).lines.get(1).points.get(Main.cube.tris.get(0).lines.get(1).points.size() - 1).xy();
-			// if (Main.points2D[(int) debugPoint.x][(int) debugPoint.y].color != Color.red) System.out.println("flicker");
-		// } catch (Exception e) {
-			// System.out.println(e);
-		// }
-		
-		//Crude attempt at double buffering xD
-		// updateFrame();
-		// g.drawImage(oldBuffer, 0, 0, this);
 		
 		g.drawImage(bImage, 0, 0, this);
 		g.dispose();
@@ -651,31 +639,6 @@ class Panel extends JPanel {
 		running = false;
 		// Main.updateFrame();
 	}
-	
-	//More double buffering
-	// public void updateFrame() {
-		// BufferedImage bImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
-		
-		
-		// for (int i = 0; i < bImage.getWidth(); i++) {
-			// for (int j = 0; j < bImage.getHeight(); j++) {
-				// if (Main.points2D[i][j] == null) {
-					// bImage.setRGB(i, j, Color.white.getRGB());
-				// }
-			// }
-		// }
-		
-		// for (int i = 0; i < bImage.getWidth(); i++) {
-			// for (int j = 0; j < bImage.getHeight(); j++) {
-				// Point p = Main.points2D[i][j];
-				// if (p != null) {
-					// bImage.setRGB((int) p.x, (int) p.y, p.color.getRGB());
-				// }					
-			// }
-		// }
-		
-		// oldBuffer = bImage;
-	// }
 	
 	
 	public void initializePanel() {
