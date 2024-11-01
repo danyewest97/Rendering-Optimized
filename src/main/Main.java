@@ -37,6 +37,9 @@ public class Main {
 	public static double millis = 0;
 	public static double avg = 0;
 	
+	
+	public static double debugZ = 0;
+	
 	public static void main(String[] args) {
 		// System.setProperty("sun.java2d.opengl", "true"); //supposed to enable hardware acceleration
 		
@@ -178,6 +181,7 @@ public class Main {
 			@Override
 			public void run() {
 				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
+				debugZ += Math.sin(millis / 100) * 1;
 				// cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
 				// cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
@@ -194,28 +198,18 @@ public class Main {
 				
 				if (!panel.running) {
 					if (cube.update()) {
-						// if (panel.running) System.out.println(panel.running);
-						// if (cubea.update()) {
-							// if (cubeb.update()) {
-								// if (!panel.running) {
-									if (!panel.running) {
-										panel.repaint();
-									}
-								// }
-							// }
-						// }
+						// String str = panel.running + ", " + cube.update();
+						// if (str.substring(0, 3).equals("true")) System.out.println(str);
+						if (!panel.running) {
+							panel.repaint();
+						}
 					}
 				}
-				
 				
 			}
 		}, 0, 1);
 	}
 	
-	
-	// public static void updateFrame() {
-		
-	// }
 	
 	
 	public static ArrayList<Line> tri(Point a, Point b, Point c) {
@@ -288,6 +282,9 @@ public class Main {
 			// add2.addToPoints();
 			
 			
+			//for debugging
+			if (add1.z < -0.1) System.out.println("flicker");
+			
 			result.add(verticalLineArray(add1, add2));
 		}
 		
@@ -354,7 +351,14 @@ public class Main {
 		Point b2D = b.xy();
 		
 		int numPoints = (int) (Math.abs(b2D.y - a2D.y) + 1);
-
+		
+		
+		//may not be necessary
+		result.points.add(a2D);
+		result.points.add(b2D);
+		a.addToPoints();
+		b.addToPoints();
+		
 
 		if (b2D.y < a2D.y) {
 			for (int i = (int) b2D.y; i <= (int) a2D.y; i++) {
@@ -396,7 +400,6 @@ public class Main {
 				}
 			}
 		}
-		
 		
 		return result;
 	}
@@ -628,6 +631,13 @@ class Panel extends JPanel {
 				}					
 			}
 		}
+		
+		// try {
+			// Point debugPoint = Main.cube.tris.get(0).lines.get(1).points.get(Main.cube.tris.get(0).lines.get(1).points.size() - 1).xy();
+			// if (Main.points2D[(int) debugPoint.x][(int) debugPoint.y].color != Color.red) System.out.println("flicker");
+		// } catch (Exception e) {
+			// System.out.println(e);
+		// }
 		
 		//Crude attempt at double buffering xD
 		// updateFrame();
