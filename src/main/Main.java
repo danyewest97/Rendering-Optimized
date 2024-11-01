@@ -293,9 +293,9 @@ public class Main {
 		
 				
 		//Adding black edges
-		Point e1 = new Point(a.x, a.y, a.z, Color.black);
-		Point e2 = new Point(b.x, b.y, b.z, Color.black);
-		Point e3 = new Point(c.x, c.y, c.z, Color.black);
+		Point e1 = new Point(a.x - 0.5, a.y - 0.5, a.z, Color.black);
+		Point e2 = new Point(b.x - 0.5, b.y - 0.5, b.z, Color.black);
+		Point e3 = new Point(c.x - 0.5, c.y - 0.5, c.z, Color.black);
 		
 		result.add(lineArray(e1, e2));
 		result.add(lineArray(e2, e3));
