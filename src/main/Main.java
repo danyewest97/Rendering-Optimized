@@ -591,6 +591,7 @@ class Frame extends JFrame {
 class Panel extends JPanel {
 	public ArrayList<Object3D> objects;
 	public boolean running = false;
+	// public BufferedImage oldBuffer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 	
 	public Panel() {
 		objects = new ArrayList<Object3D>();
@@ -611,8 +612,6 @@ class Panel extends JPanel {
 		BufferedImage bImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 		
 		
-		Graphics2D g2D = (Graphics2D) g;
-		
 		for (int i = 0; i < bImage.getWidth(); i++) {
 			for (int j = 0; j < bImage.getHeight(); j++) {
 				if (Main.points2D[i][j] == null) {
@@ -630,6 +629,9 @@ class Panel extends JPanel {
 			}
 		}
 		
+		//Crude attempt at double buffering xD
+		// updateFrame();
+		// g.drawImage(oldBuffer, 0, 0, this);
 		
 		g.drawImage(bImage, 0, 0, this);
 		g.dispose();
@@ -639,6 +641,31 @@ class Panel extends JPanel {
 		running = false;
 		// Main.updateFrame();
 	}
+	
+	//More double buffering
+	// public void updateFrame() {
+		// BufferedImage bImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+		
+		
+		// for (int i = 0; i < bImage.getWidth(); i++) {
+			// for (int j = 0; j < bImage.getHeight(); j++) {
+				// if (Main.points2D[i][j] == null) {
+					// bImage.setRGB(i, j, Color.white.getRGB());
+				// }
+			// }
+		// }
+		
+		// for (int i = 0; i < bImage.getWidth(); i++) {
+			// for (int j = 0; j < bImage.getHeight(); j++) {
+				// Point p = Main.points2D[i][j];
+				// if (p != null) {
+					// bImage.setRGB((int) p.x, (int) p.y, p.color.getRGB());
+				// }					
+			// }
+		// }
+		
+		// oldBuffer = bImage;
+	// }
 	
 	
 	public void initializePanel() {
