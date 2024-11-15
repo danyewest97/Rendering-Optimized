@@ -74,96 +74,96 @@ public class Main {
 		Tri tri12 = new Tri(d1, d, a);
 		
 		ArrayList<Tri> tris = new ArrayList<Tri>();
-		// tris.add(tri1);
+		tris.add(tri1);
 		tris.add(tri2);
-		// tris.add(tri3);
-		// tris.add(tri4);
-		// tris.add(tri5);
-		// tris.add(tri6);
-		// tris.add(tri7);
-		// tris.add(tri8);
-		// tris.add(tri9);
-		// tris.add(tri10);
-		// tris.add(tri11);
-		// tris.add(tri12);
+		tris.add(tri3);
+		tris.add(tri4);
+		tris.add(tri5);
+		tris.add(tri6);
+		tris.add(tri7);
+		tris.add(tri8);
+		tris.add(tri9);
+		tris.add(tri10);
+		tris.add(tri11);
+		tris.add(tri12);
 		
 		cube = new Object3D(tris);
 		
 		
 		
 		
-		// Tri tri1a = new Tri(a, b, c);
-		// Tri tri2a = new Tri(a, c, d);
-		// Tri tri3a = new Tri(a1, b1, c1);
-		// Tri tri4a = new Tri(a1, c1, d1);
-		// Tri tri5a = new Tri(a1, a, b1);
-		// Tri tri6a = new Tri(b1, b, a);
-		// Tri tri7a = new Tri(b1, b, c);
-		// Tri tri8a = new Tri(b1, c1, c);
-		// Tri tri9a = new Tri(d, c, c1);
-		// Tri tri10a = new Tri(d, d1, c1);
-		// Tri tri11a = new Tri(a1, a, d1);
-		// Tri tri12a = new Tri(d1, d, a);
+		Tri tri1a = new Tri(a, b, c);
+		Tri tri2a = new Tri(a, c, d);
+		Tri tri3a = new Tri(a1, b1, c1);
+		Tri tri4a = new Tri(a1, c1, d1);
+		Tri tri5a = new Tri(a1, a, b1);
+		Tri tri6a = new Tri(b1, b, a);
+		Tri tri7a = new Tri(b1, b, c);
+		Tri tri8a = new Tri(b1, c1, c);
+		Tri tri9a = new Tri(d, c, c1);
+		Tri tri10a = new Tri(d, d1, c1);
+		Tri tri11a = new Tri(a1, a, d1);
+		Tri tri12a = new Tri(d1, d, a);
 		
-		// ArrayList<Tri> trisa = new ArrayList<Tri>();
-		// trisa.add(tri1a);
-		// trisa.add(tri2a);
-		// trisa.add(tri3a);
-		// trisa.add(tri4a);
-		// trisa.add(tri5a);
-		// trisa.add(tri6a);
-		// trisa.add(tri7a);
-		// trisa.add(tri8a);
-		// trisa.add(tri9a);
-		// trisa.add(tri10a);
-		// trisa.add(tri11a);
-		// trisa.add(tri12a);
+		ArrayList<Tri> trisa = new ArrayList<Tri>();
+		trisa.add(tri1a);
+		trisa.add(tri2a);
+		trisa.add(tri3a);
+		trisa.add(tri4a);
+		trisa.add(tri5a);
+		trisa.add(tri6a);
+		trisa.add(tri7a);
+		trisa.add(tri8a);
+		trisa.add(tri9a);
+		trisa.add(tri10a);
+		trisa.add(tri11a);
+		trisa.add(tri12a);
 		
-		// cubea = new Object3D(trisa);
-		
-		
-		
-		// Tri tri1b = new Tri(a, b, c);
-		// Tri tri2b = new Tri(a, c, d);
-		// Tri tri3b = new Tri(a1, b1, c1);
-		// Tri tri4b = new Tri(a1, c1, d1);
-		// Tri tri5b = new Tri(a1, a, b1);
-		// Tri tri6b = new Tri(b1, b, a);
-		// Tri tri7b = new Tri(b1, b, c);
-		// Tri tri8b = new Tri(b1, c1, c);
-		// Tri tri9b = new Tri(d, c, c1);
-		// Tri tri10b = new Tri(d, d1, c1);
-		// Tri tri11b = new Tri(a1, a, d1);
-		// Tri tri12b = new Tri(d1, d, a);
-		
-		// ArrayList<Tri> trisb = new ArrayList<Tri>();
-		// trisb.add(tri1b);
-		// trisb.add(tri2b);
-		// trisb.add(tri3b);
-		// trisb.add(tri4b);
-		// trisb.add(tri5b);
-		// trisb.add(tri6b);
-		// trisb.add(tri7b);
-		// trisb.add(tri8b);
-		// trisb.add(tri9b);
-		// trisb.add(tri10b);
-		// trisb.add(tri11b);
-		// trisb.add(tri12b);
-		
-		// cubeb = new Object3D(trisb);
+		cubea = new Object3D(trisa);
 		
 		
 		
+		Tri tri1b = new Tri(a, b, c);
+		Tri tri2b = new Tri(a, c, d);
+		Tri tri3b = new Tri(a1, b1, c1);
+		Tri tri4b = new Tri(a1, c1, d1);
+		Tri tri5b = new Tri(a1, a, b1);
+		Tri tri6b = new Tri(b1, b, a);
+		Tri tri7b = new Tri(b1, b, c);
+		Tri tri8b = new Tri(b1, c1, c);
+		Tri tri9b = new Tri(d, c, c1);
+		Tri tri10b = new Tri(d, d1, c1);
+		Tri tri11b = new Tri(a1, a, d1);
+		Tri tri12b = new Tri(d1, d, a);
+		
+		ArrayList<Tri> trisb = new ArrayList<Tri>();
+		trisb.add(tri1b);
+		trisb.add(tri2b);
+		trisb.add(tri3b);
+		trisb.add(tri4b);
+		trisb.add(tri5b);
+		trisb.add(tri6b);
+		trisb.add(tri7b);
+		trisb.add(tri8b);
+		trisb.add(tri9b);
+		trisb.add(tri10b);
+		trisb.add(tri11b);
+		trisb.add(tri12b);
+		
+		cubeb = new Object3D(trisb);
 		
 		
-		// panel.objects.add(cube);
-		
-		// panel.objects.add(cubea);
-		
-		// panel.objects.add(cubeb);
 		
 		
-		// cube.move(100, 100, 0);
+		
+		panel.objects.add(cube);
+		
+		panel.objects.add(cubea);
+		
+		panel.objects.add(cubeb);
+		
+		
+		cube.move(100, 100, 0);
 		
 		
 		
@@ -177,9 +177,9 @@ public class Main {
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				// cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
-				// cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
-				// cubeb.move(0, 0, Math.sin(millis / 250) * 1);
+				cube.move(Math.cos(millis / 100) * 1, Math.sin(millis / 100) * 1, Math.sin(millis / 100) * 1);
+				cubea.move(Math.cos(millis / 250) * 1, Math.sin(millis / 170) * 1, 0);
+				cubeb.move(0, 0, Math.sin(millis / 250) * 1);
 				
 				// tri1.a.z += 0.3;
 				millis++;
@@ -195,14 +195,14 @@ public class Main {
 				if (!panel.running) {
 					if (cube.update()) {
 						// if (panel.running) System.out.println(panel.running);
-						// if (cubea.update()) {
-							// if (cubeb.update()) {
+						if (cubea.update()) {
+							if (cubeb.update()) {
 								// if (!panel.running) {
 									if (!panel.running) {
 										panel.repaint();
 									}
-								// }
-							// }
+								}
+							}
 						// }
 					}
 				}
